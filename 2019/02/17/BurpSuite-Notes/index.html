@@ -79,16 +79,31 @@
 
 
 
-<meta name="description" content="Learning">
-<meta property="og:type" content="website">
-<meta property="og:title" content="JrD&#39;s blog">
-<meta property="og:url" content="https://jrdw0.github.io/archives/2018/page/2/index.html">
+<meta name="description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BurpSuite Notes">
+<meta property="og:url" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/index.html">
 <meta property="og:site_name" content="JrD&#39;s blog">
-<meta property="og:description" content="Learning">
+<meta property="og:description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/sniper.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/batteringram.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/Pitchfork.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/Cluster.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/basic.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/base64.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/custom.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/1.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/2.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/3.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/base64encode.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/url.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/result.png">
+<meta property="og:updated_time" content="2019-02-17T13:37:04.012Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JrD&#39;s blog">
-<meta name="twitter:description" content="Learning">
+<meta name="twitter:title" content="BurpSuite Notes">
+<meta name="twitter:description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
+<meta name="twitter:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/sniper.png">
 
 
 
@@ -118,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://jrdw0.github.io/archives/2018/page/2/"/>
+  <link rel="canonical" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/"/>
 
 
 
 
 
-  <title>归档 | JrD's blog</title>
+  <title>BurpSuite Notes | JrD's blog</title>
   
 
 
@@ -143,7 +158,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,78 +232,177 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 7 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/08/06/php-code-review/" itemprop="url">
-              
-                <span itemprop="name">php code review</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">BurpSuite Notes</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-06T17:28:57+08:00"
-              content="2018-08-06" >
-          08-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T19:44:31+08:00">
+                2019-02-17
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/17/BurpSuite-Notes/" class="leancloud_visitors" data-flag-title="BurpSuite Notes">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <h2 id="Intruder"><a href="#Intruder" class="headerlink" title="Intruder"></a>Intruder</h2><h3 id="Attack-type"><a href="#Attack-type" class="headerlink" title="Attack type"></a>Attack type</h3><p>记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。</p>
+<p>以下都是使用simplelist，list里的payload内容为payload1，payload2……</p>
+<ul>
+<li>Sniper（狙击手）</li>
+</ul>
+<p>假如有1、2两个payload位置，result如下<br><img src="/2019/02/17/BurpSuite-Notes/sniper.png" alt="image"></p>
+<ul>
+<li>Battering ram（攻城锤）</li>
+</ul>
+<p>1、2位置的会使用同一个payload<br><img src="/2019/02/17/BurpSuite-Notes/batteringram.png" alt="image"></p>
+<ul>
+<li>Pitchfork(干草叉）</li>
+</ul>
+<p>1、2位置需要设置2个不同的list，并且两个list里的payload是一一对应的关系<br><img src="/2019/02/17/BurpSuite-Notes/Pitchfork.png" alt="image"></p>
+<ul>
+<li>Cluster bomb(密集轰炸)</li>
+</ul>
+<p>相当于是一个递归了，2个list按顺序递归<br><img src="/2019/02/17/BurpSuite-Notes/Cluster.png" alt="image"></p>
+<h2 id="爆破basic认证"><a href="#爆破basic认证" class="headerlink" title="爆破basic认证"></a>爆破basic认证</h2><p>接下来以tomcat为例，使用Intruder模块爆破，其中涉及了模块的custom iterator（自定义迭代器）的使用，以及base64编码器的使用</p>
+<p>如图为一个tomcat的basic认证包<br><img src="/2019/02/17/BurpSuite-Notes/basic.png" alt="image"></p>
+<p>进行base64decode之后可见payload为<code>tomcat:tomcat</code>的形式<br><img src="/2019/02/17/BurpSuite-Notes/base64.png" alt="image"></p>
+<p>选择sniper模式，然后选择payload sets中选择<strong>custom iterator</strong><br><img src="/2019/02/17/BurpSuite-Notes/custom.png" alt="image"></p>
+<p>然后1，2，3位置设置分别如下<br><img src="/2019/02/17/BurpSuite-Notes/1.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/2.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/3.png" alt="image"></p>
+<p>然后增加编码器<br><img src="/2019/02/17/BurpSuite-Notes/base64encode.png" alt="image"></p>
+<p>记得将最后的URL-encode取消，不然会把base64中的<code>=</code>编码成<code>%3d</code><br><img src="/2019/02/17/BurpSuite-Notes/url.png" alt="image"></p>
+<p>然后就可以Start attack了！result如下：<br><img src="/2019/02/17/BurpSuite-Notes/result.png" alt="image"></p>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/20/web渗透测试（黑盒）/" rel="next" title="web渗透测试（黑盒）">
+                <i class="fa fa-chevron-left"></i> web渗透测试（黑盒）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2018/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -296,6 +410,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -316,8 +434,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -368,6 +495,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intruder"><span class="nav-number">1.</span> <span class="nav-text">Intruder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Attack-type"><span class="nav-number">1.1.</span> <span class="nav-text">Attack type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爆破basic认证"><span class="nav-number">2.</span> <span class="nav-text">爆破basic认证</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -508,6 +651,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

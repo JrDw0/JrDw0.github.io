@@ -232,6 +232,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/17/BurpSuite-Notes/" itemprop="url">BurpSuite Notes</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T19:44:31+08:00">
+                2019-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/17/BurpSuite-Notes/" class="leancloud_visitors" data-flag-title="BurpSuite Notes">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Intruder"><a href="#Intruder" class="headerlink" title="Intruder"></a>Intruder</h2><h3 id="Attack-type"><a href="#Attack-type" class="headerlink" title="Attack type"></a>Attack type</h3><p>记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。</p>
+<p>以下都是使用simplelist，list里的payload内容为payload1，payload2……</p>
+<ul>
+<li>Sniper（狙击手）</li>
+</ul>
+<p>假如有1、2两个payload位置，result如下<br><img src="/2019/02/17/BurpSuite-Notes/sniper.png" alt="image"></p>
+<ul>
+<li>Battering ram（攻城锤）</li>
+</ul>
+<p>1、2位置的会使用同一个payload<br><img src="/2019/02/17/BurpSuite-Notes/batteringram.png" alt="image"></p>
+<ul>
+<li>Pitchfork(干草叉）</li>
+</ul>
+<p>1、2位置需要设置2个不同的list，并且两个list里的payload是一一对应的关系<br><img src="/2019/02/17/BurpSuite-Notes/Pitchfork.png" alt="image"></p>
+<ul>
+<li>Cluster bomb(密集轰炸)</li>
+</ul>
+<p>相当于是一个递归了，2个list按顺序递归<br><img src="/2019/02/17/BurpSuite-Notes/Cluster.png" alt="image"></p>
+<h2 id="爆破basic认证"><a href="#爆破basic认证" class="headerlink" title="爆破basic认证"></a>爆破basic认证</h2><p>接下来以tomcat为例，使用Intruder模块爆破，其中涉及了模块的custom iterator（自定义迭代器）的使用，以及base64编码器的使用</p>
+<p>如图为一个tomcat的basic认证包<br><img src="/2019/02/17/BurpSuite-Notes/basic.png" alt="image"></p>
+<p>进行base64decode之后可见payload为<code>tomcat:tomcat</code>的形式<br><img src="/2019/02/17/BurpSuite-Notes/base64.png" alt="image"></p>
+<p>选择sniper模式，然后选择payload sets中选择<strong>custom iterator</strong><br><img src="/2019/02/17/BurpSuite-Notes/custom.png" alt="image"></p>
+<p>然后1，2，3位置设置分别如下<br><img src="/2019/02/17/BurpSuite-Notes/1.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/2.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/3.png" alt="image"></p>
+<p>然后增加编码器<br><img src="/2019/02/17/BurpSuite-Notes/base64encode.png" alt="image"></p>
+<p>记得将最后的URL-encode取消，不然会把base64中的<code>=</code>编码成<code>%3d</code><br><img src="/2019/02/17/BurpSuite-Notes/url.png" alt="image"></p>
+<p>然后就可以Start attack了！result如下：<br><img src="/2019/02/17/BurpSuite-Notes/result.png" alt="image"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/11/20/web渗透测试（黑盒）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -341,141 +497,6 @@
 <ul>
 <li>dedecms（织梦）</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/11/19/Java容器安全总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JrD">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JrD's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/19/Java容器安全总结/" itemprop="url">Java容器安全总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-19T14:06:07+08:00">
-                2018-11-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/11/19/Java容器安全总结/" class="leancloud_visitors" data-flag-title="Java容器安全总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="JBOSS"><a href="#JBOSS" class="headerlink" title="JBOSS"></a>JBOSS</h2><p>JBoss应用服务器（JBoss AS）是一个被广泛使用的开源Java应用服务器。</p>
-<p>它是JBoss企业中间件（JEMS）的一部分，并且经常在<strong>大型企业</strong>中使用。</p>
-<h3 id="信息识别与收集"><a href="#信息识别与收集" class="headerlink" title="信息识别与收集"></a>信息识别与收集</h3><p>默认端口8080</p>
-<p>寻找JBoss服务器的方法：<br>google hack<br>inurl:”jmx-console/HtmlAdaptor”<br>intitle:”Welcome to JBoss”</p>
-<p>fofa,shodan,zoomeye网络空间搜索引擎</p>
 
           
         
