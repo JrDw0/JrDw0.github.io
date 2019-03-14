@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hello, World" />
+  <meta name="keywords" content="PHP,解密," />
 
 
 
@@ -79,31 +79,27 @@
 
 
 
-<meta name="description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
+<meta name="description" content="前言要对公司内部的某堡垒机系统做测试审计，但是碰到了加密的PHP文件，因为是采购的第三方整套设备所以只能自己做解密啦，加密形式如下图： 收集信息收集了一下PM9SCREW的信息，该使用的加密拓展名字叫PHP_Screw，这是一款免费的针对PHP源码进行加密的PHP的扩展，可以自定义加密的key，加密后的文件效率还不会下降。其原理是通过压缩取反然后跟加密的key做异或加密的方式，在使用的时候通过.s">
+<meta name="keywords" content="PHP,解密">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BurpSuite Notes">
-<meta property="og:url" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/index.html">
+<meta property="og:title" content="PHP_SCREW解密PM9SCREW">
+<meta property="og:url" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/index.html">
 <meta property="og:site_name" content="JrD&#39;s blog">
-<meta property="og:description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
+<meta property="og:description" content="前言要对公司内部的某堡垒机系统做测试审计，但是碰到了加密的PHP文件，因为是采购的第三方整套设备所以只能自己做解密啦，加密形式如下图： 收集信息收集了一下PM9SCREW的信息，该使用的加密拓展名字叫PHP_Screw，这是一款免费的针对PHP源码进行加密的PHP的扩展，可以自定义加密的key，加密后的文件效率还不会下降。其原理是通过压缩取反然后跟加密的key做异或加密的方式，在使用的时候通过.s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/sniper.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/batteringram.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/Pitchfork.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/Cluster.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/basic.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/base64.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/custom.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/1.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/2.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/3.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/base64encode.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/url.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/result.png">
-<meta property="og:updated_time" content="2019-02-17T13:37:35.161Z">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/encrypt.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/find.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/so.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/1.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/2.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/3.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/4.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/5.png">
+<meta property="og:updated_time" content="2019-03-14T02:59:10.463Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BurpSuite Notes">
-<meta name="twitter:description" content="IntruderAttack type记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。 以下都是使用simplelist，list里的payload内容为payload1，payload2……  Snip">
-<meta name="twitter:image" content="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/sniper.png">
+<meta name="twitter:title" content="PHP_SCREW解密PM9SCREW">
+<meta name="twitter:description" content="前言要对公司内部的某堡垒机系统做测试审计，但是碰到了加密的PHP文件，因为是采购的第三方整套设备所以只能自己做解密啦，加密形式如下图： 收集信息收集了一下PM9SCREW的信息，该使用的加密拓展名字叫PHP_Screw，这是一款免费的针对PHP源码进行加密的PHP的扩展，可以自定义加密的key，加密后的文件效率还不会下降。其原理是通过压缩取反然后跟加密的key做异或加密的方式，在使用的时候通过.s">
+<meta name="twitter:image" content="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/encrypt.png">
 
 
 
@@ -133,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/"/>
+  <link rel="canonical" href="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/"/>
 
 
 
 
 
-  <title>BurpSuite Notes | JrD's blog</title>
+  <title>PHP_SCREW解密PM9SCREW | JrD's blog</title>
   
 
 
@@ -246,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JrD">
@@ -263,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">BurpSuite Notes</h1>
+          <h1 class="post-title" itemprop="name headline">PHP_SCREW解密PM9SCREW</h1>
         
 
         <div class="post-meta">
@@ -275,8 +271,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T19:44:31+08:00">
-                2019-02-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-14T10:07:05+08:00">
+                2019-03-14
               </time>
             
 
@@ -293,7 +289,7 @@
 
           
           
-             <span id="/2019/02/17/BurpSuite-Notes/" class="leancloud_visitors" data-flag-title="BurpSuite Notes">
+             <span id="/2019/03/14/PHP-SCREW解密PM9SCREW/" class="leancloud_visitors" data-flag-title="PHP_SCREW解密PM9SCREW">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,32 +320,16 @@
       
 
       
-        <h2 id="Intruder"><a href="#Intruder" class="headerlink" title="Intruder"></a>Intruder</h2><h3 id="Attack-type"><a href="#Attack-type" class="headerlink" title="Attack type"></a>Attack type</h3><p>记录一下Intruder的Attack type，对于几种Attack Type的不同主要是在有多个payload位置（例如一个username一个password）的情况下，使用一个或者两个字典list的时候，会产生实际不同的payload。</p>
-<p>以下都是使用simplelist，list里的payload内容为payload1，payload2……</p>
-<ul>
-<li>Sniper（狙击手）</li>
-</ul>
-<p>假如有1、2两个payload位置，result如下<br><img src="/2019/02/17/BurpSuite-Notes/sniper.png" alt="image"></p>
-<ul>
-<li>Battering ram（攻城锤）</li>
-</ul>
-<p>1、2位置的会使用同一个payload<br><img src="/2019/02/17/BurpSuite-Notes/batteringram.png" alt="image"></p>
-<ul>
-<li>Pitchfork(干草叉）</li>
-</ul>
-<p>1、2位置需要设置2个不同的list，并且两个list里的payload是一一对应的关系<br><img src="/2019/02/17/BurpSuite-Notes/Pitchfork.png" alt="image"></p>
-<ul>
-<li>Cluster bomb(密集轰炸)</li>
-</ul>
-<p>相当于是一个递归了，2个list按顺序递归<br><img src="/2019/02/17/BurpSuite-Notes/Cluster.png" alt="image"></p>
-<h2 id="爆破basic认证"><a href="#爆破basic认证" class="headerlink" title="爆破basic认证"></a>爆破basic认证</h2><p>接下来以tomcat为例，使用Intruder模块爆破，其中涉及了模块的custom iterator（自定义迭代器）的使用，以及base64编码器的使用</p>
-<p>如图为一个tomcat的basic认证包<br><img src="/2019/02/17/BurpSuite-Notes/basic.png" alt="image"></p>
-<p>进行base64decode之后可见payload为<code>tomcat:tomcat</code>的形式<br><img src="/2019/02/17/BurpSuite-Notes/base64.png" alt="image"></p>
-<p>选择sniper模式，然后选择payload sets中选择<strong>custom iterator</strong><br><img src="/2019/02/17/BurpSuite-Notes/custom.png" alt="image"></p>
-<p>然后1，2，3位置设置分别如下<br><img src="/2019/02/17/BurpSuite-Notes/1.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/2.png" alt="image"><br><img src="/2019/02/17/BurpSuite-Notes/3.png" alt="image"></p>
-<p>然后增加编码器<br><img src="/2019/02/17/BurpSuite-Notes/base64encode.png" alt="image"></p>
-<p>记得将最后的URL-encode取消，不然会把base64中的<code>=</code>编码成<code>%3d</code><br><img src="/2019/02/17/BurpSuite-Notes/url.png" alt="image"></p>
-<p>然后就可以Start attack了！result如下：<br><img src="/2019/02/17/BurpSuite-Notes/result.png" alt="image"></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>要对公司内部的某堡垒机系统做测试审计，但是碰到了加密的PHP文件，因为是采购的第三方整套设备所以只能自己做解密啦，加密形式如下图：<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/encrypt.png" alt="image"></p>
+<h2 id="收集信息"><a href="#收集信息" class="headerlink" title="收集信息"></a>收集信息</h2><p>收集了一下PM9SCREW的信息，该使用的加密拓展名字叫PHP_Screw，这是一款免费的针对PHP源码进行加密的PHP的扩展，可以自定义加密的key，加密后的文件效率还不会下降。其原理是通过压缩取反然后跟加密的key做异或加密的方式，在使用的时候通过.so文件的拓展文件进行解密然后再运行。并且找到了两个前人写好的工具，参考文章及工具链接如下。<br><a href="https://www.skactor.tk/2018/03/26/php-screw%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86%E6%8E%A2%E7%A9%B6%EF%BC%88%E4%BA%8C%EF%BC%89%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8Epython%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">https://www.skactor.tk/2018/03/26/php-screw%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86%E6%8E%A2%E7%A9%B6%EF%BC%88%E4%BA%8C%EF%BC%89%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8Epython%E5%AE%9E%E7%8E%B0/</a><br><a href="https://github.com/firebroo/screw_decode" target="_blank" rel="noopener">https://github.com/firebroo/screw_decode</a></p>
+<h2 id="解密过程"><a href="#解密过程" class="headerlink" title="解密过程"></a>解密过程</h2><p>通过前文得知有加密密钥存储的.so拓展文件很关键，所以先寻找文件<img src="/2019/03/14/PHP-SCREW解密PM9SCREW/find.png" alt="image"><br>找到了之后发现也是二进制文件<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/so.png" alt="image"><br>于是IDA搞起,先找到pm9screw相关函数<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/1.png" alt="image"><br>然后追踪相关变量<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/2.png" alt="image"><br>找到加密的密钥口令<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/3.png" alt="image"><br>hex转为十进制<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/4.png" alt="image"><br>然后另一个函数中找到头部变量（这里为默认值）<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/5.png" alt="image"></p>
+<p>然后将找到的密钥和头部放入前文的工具中使用即可</p>
+<p>##小脚本<br>前文中的工具只会对php文件解密后复制成<code>.php.decode</code>的同名文件,所以写了个小脚本来把除了原本的php文件之外的文件按目录结构复制出来，在这里也放出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">copy_tree_ext</span><span class="params">(exts,src,dest)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Rebuild the director tree like src below dest and copy all files like XXX.exts to dest</span></span><br><span class="line"><span class="string">    exts:exetens seperate by blank like "jpg png gif"</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    fp=&#123;&#125;</span><br><span class="line">    extss=exts.lower().split()</span><br><span class="line">    <span class="keyword">for</span> dn,dns,fns  <span class="keyword">in</span> os.walk(src):</span><br><span class="line">        <span class="keyword">for</span> fl <span class="keyword">in</span> fns:</span><br><span class="line">            <span class="keyword">if</span> os.path.splitext(fl.lower())[<span class="number">1</span>][<span class="number">1</span>:] <span class="keyword">not</span> <span class="keyword">in</span> extss:</span><br><span class="line">                <span class="keyword">if</span> dn <span class="keyword">not</span> <span class="keyword">in</span> fp.keys():</span><br><span class="line">                    fp[dn]=[]</span><br><span class="line">                fp[dn].append(fl)</span><br><span class="line">    <span class="keyword">for</span> k,v <span class="keyword">in</span> fp.items():</span><br><span class="line">            relativepath=k[len(src)+<span class="number">1</span>:]</span><br><span class="line">            newpath=os.path.join(dest,relativepath)</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> v:</span><br><span class="line">                oldfile=os.path.join(k,f)</span><br><span class="line">                print(<span class="string">"拷贝 ["</span>+oldfile+<span class="string">"] 至 ["</span>+newpath+<span class="string">"]"</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(newpath):</span><br><span class="line">                    os.makedirs(newpath)</span><br><span class="line">                shutil.copy(oldfile,newpath)</span><br><span class="line"></span><br><span class="line">copy_tree_ext(<span class="string">'php'</span>,<span class="string">'/srcdir'</span>,<span class="string">'/destdir'</span>)</span><br></pre></td></tr></table></figure>
+<p>然后稍微改一改再把<code>.php.decode</code>后缀改成<code>.php</code>就大功告成了，因为忘记保存所以偷个懒就不再放代码了。</p>
+<p>总的来说感谢前人，以及如果使用该拓展加密，千万记得改掉或者隐去头部的几个字符，以及把<code>.so</code>文件隐藏好。</p>
+<p>PS：遇到一个hexo的小坑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:</span><br></pre></td></tr></table></figure></p>
+<p>记得要在所有<code>:</code>后面加空格，以及中英文字符一定得注意。</p>
 
       
     </div>
@@ -365,6 +345,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/PHP-解密/" rel="tag"># PHP,解密</a>
+          
+        </div>
+      
 
       
       
@@ -374,8 +360,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/20/web渗透测试（黑盒）/" rel="next" title="web渗透测试（黑盒）">
-                <i class="fa fa-chevron-left"></i> web渗透测试（黑盒）
+              <a href="/2019/02/17/BurpSuite-Notes/" rel="next" title="BurpSuite Notes">
+                <i class="fa fa-chevron-left"></i> BurpSuite Notes
               </a>
             
           </div>
@@ -383,10 +369,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/14/PHP-SCREW解密PM9SCREW/" rel="prev" title="PHP_SCREW解密PM9SCREW">
-                PHP_SCREW解密PM9SCREW <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,7 +491,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intruder"><span class="nav-number">1.</span> <span class="nav-text">Intruder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Attack-type"><span class="nav-number">1.1.</span> <span class="nav-text">Attack type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爆破basic认证"><span class="nav-number">2.</span> <span class="nav-text">爆破basic认证</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收集信息"><span class="nav-number">2.</span> <span class="nav-text">收集信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解密过程"><span class="nav-number">3.</span> <span class="nav-text">解密过程</span></a></li></ol></div>
             
 
           </div>

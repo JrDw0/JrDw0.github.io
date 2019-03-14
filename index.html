@@ -232,6 +232,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/14/PHP-SCREW解密PM9SCREW/" itemprop="url">PHP_SCREW解密PM9SCREW</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-14T10:07:05+08:00">
+                2019-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/14/PHP-SCREW解密PM9SCREW/" class="leancloud_visitors" data-flag-title="PHP_SCREW解密PM9SCREW">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>要对公司内部的某堡垒机系统做测试审计，但是碰到了加密的PHP文件，因为是采购的第三方整套设备所以只能自己做解密啦，加密形式如下图：<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/encrypt.png" alt="image"></p>
+<h2 id="收集信息"><a href="#收集信息" class="headerlink" title="收集信息"></a>收集信息</h2><p>收集了一下PM9SCREW的信息，该使用的加密拓展名字叫PHP_Screw，这是一款免费的针对PHP源码进行加密的PHP的扩展，可以自定义加密的key，加密后的文件效率还不会下降。其原理是通过压缩取反然后跟加密的key做异或加密的方式，在使用的时候通过.so文件的拓展文件进行解密然后再运行。并且找到了两个前人写好的工具，参考文章及工具链接如下。<br><a href="https://www.skactor.tk/2018/03/26/php-screw%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86%E6%8E%A2%E7%A9%B6%EF%BC%88%E4%BA%8C%EF%BC%89%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8Epython%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">https://www.skactor.tk/2018/03/26/php-screw%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86%E6%8E%A2%E7%A9%B6%EF%BC%88%E4%BA%8C%EF%BC%89%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8Epython%E5%AE%9E%E7%8E%B0/</a><br><a href="https://github.com/firebroo/screw_decode" target="_blank" rel="noopener">https://github.com/firebroo/screw_decode</a></p>
+<h2 id="解密过程"><a href="#解密过程" class="headerlink" title="解密过程"></a>解密过程</h2><p>通过前文得知有加密密钥存储的.so拓展文件很关键，所以先寻找文件<img src="/2019/03/14/PHP-SCREW解密PM9SCREW/find.png" alt="image"><br>找到了之后发现也是二进制文件<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/so.png" alt="image"><br>于是IDA搞起,先找到pm9screw相关函数<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/1.png" alt="image"><br>然后追踪相关变量<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/2.png" alt="image"><br>找到加密的密钥口令<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/3.png" alt="image"><br>hex转为十进制<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/4.png" alt="image"><br>然后另一个函数中找到头部变量（这里为默认值）<br><img src="/2019/03/14/PHP-SCREW解密PM9SCREW/5.png" alt="image"></p>
+<p>然后将找到的密钥和头部放入前文的工具中使用即可</p>
+<p>##小脚本<br>前文中的工具只会对php文件解密后复制成<code>.php.decode</code>的同名文件,所以写了个小脚本来把除了原本的php文件之外的文件按目录结构复制出来，在这里也放出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">copy_tree_ext</span><span class="params">(exts,src,dest)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Rebuild the director tree like src below dest and copy all files like XXX.exts to dest</span></span><br><span class="line"><span class="string">    exts:exetens seperate by blank like "jpg png gif"</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    fp=&#123;&#125;</span><br><span class="line">    extss=exts.lower().split()</span><br><span class="line">    <span class="keyword">for</span> dn,dns,fns  <span class="keyword">in</span> os.walk(src):</span><br><span class="line">        <span class="keyword">for</span> fl <span class="keyword">in</span> fns:</span><br><span class="line">            <span class="keyword">if</span> os.path.splitext(fl.lower())[<span class="number">1</span>][<span class="number">1</span>:] <span class="keyword">not</span> <span class="keyword">in</span> extss:</span><br><span class="line">                <span class="keyword">if</span> dn <span class="keyword">not</span> <span class="keyword">in</span> fp.keys():</span><br><span class="line">                    fp[dn]=[]</span><br><span class="line">                fp[dn].append(fl)</span><br><span class="line">    <span class="keyword">for</span> k,v <span class="keyword">in</span> fp.items():</span><br><span class="line">            relativepath=k[len(src)+<span class="number">1</span>:]</span><br><span class="line">            newpath=os.path.join(dest,relativepath)</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> v:</span><br><span class="line">                oldfile=os.path.join(k,f)</span><br><span class="line">                print(<span class="string">"拷贝 ["</span>+oldfile+<span class="string">"] 至 ["</span>+newpath+<span class="string">"]"</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(newpath):</span><br><span class="line">                    os.makedirs(newpath)</span><br><span class="line">                shutil.copy(oldfile,newpath)</span><br><span class="line"></span><br><span class="line">copy_tree_ext(<span class="string">'php'</span>,<span class="string">'/srcdir'</span>,<span class="string">'/destdir'</span>)</span><br></pre></td></tr></table></figure>
+<p>然后稍微改一改再把<code>.php.decode</code>后缀改成<code>.php</code>就大功告成了，因为忘记保存所以偷个懒就不再放代码了。</p>
+<p>总的来说感谢前人，以及如果使用该拓展加密，千万记得改掉或者隐去头部的几个字符，以及把<code>.so</code>文件隐藏好。</p>
+<p>PS：遇到一个hexo的小坑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:</span><br></pre></td></tr></table></figure></p>
+<p>记得要在所有<code>:</code>后面加空格，以及中英文字符一定得注意。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/02/17/BurpSuite-Notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -945,147 +1085,6 @@ site:xxx.com 管理/后台/admin/login
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JrD">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JrD's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/" itemprop="url">PbootCMS v1.1.4 Remote Code Execute Vulnerability</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-08T07:30:08+08:00">
-                2018-09-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/" class="leancloud_visitors" data-flag-title="PbootCMS v1.1.4 Remote Code Execute Vulnerability">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/1.jpg" alt=""></p>
-<p>漏洞出现在apps\home\controller\ParserController.php的<code>parserIfLabel</code>函数,漏洞有关的代码在1835到1848行，其中1848行出现了<code>eval</code>函数。</p>
-<p>这段函数采用了两次正则匹配的过滤方式，第一次正则需要构造形如<code>{pboot:if(payload)}{/pboot:if}</code>这样的字符串。</p>
-<p>第二次正则需要payload中不能出现字母+()这样形式的函数，直接使用形如<code>phpinfo(1)</code>的payload即可。</p>
-<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/2.jpg" alt=""></p>
-<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/3.jpg" alt=""></p>
-<p>然后回溯函数可以看到<code>parserIfLabel</code>函数被<code>parserCommom</code>函数所引用，继续回溯可发现该函数出现在如图位置，其中可利用的位置非常多，前台的搜索、留言，后台的各项信息修改等位置都可以传参执行。</p>
-<p>以下以留言板举例：</p>
-<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/4.jpg" alt=""><br>构造这样的留言表单提交，即可成功执行代码。<br><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/5.jpg" alt=""></p>
-<p>因其余位置任意代码执行利用同理，此处不再赘述。</p>
-<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/6.jpg" alt=""><br>系统的高版本对此漏洞进行了修复，增加了安全校验过滤。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1136,7 +1135,7 @@ site:xxx.com 管理/后台/admin/login
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1149,7 +1148,7 @@ site:xxx.com 管理/后台/admin/login
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

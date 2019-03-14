@@ -232,6 +232,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/" itemprop="url">PbootCMS v1.1.4 Remote Code Execute Vulnerability</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-08T07:30:08+08:00">
+                2018-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/" class="leancloud_visitors" data-flag-title="PbootCMS v1.1.4 Remote Code Execute Vulnerability">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/1.jpg" alt=""></p>
+<p>漏洞出现在apps\home\controller\ParserController.php的<code>parserIfLabel</code>函数,漏洞有关的代码在1835到1848行，其中1848行出现了<code>eval</code>函数。</p>
+<p>这段函数采用了两次正则匹配的过滤方式，第一次正则需要构造形如<code>{pboot:if(payload)}{/pboot:if}</code>这样的字符串。</p>
+<p>第二次正则需要payload中不能出现字母+()这样形式的函数，直接使用形如<code>phpinfo(1)</code>的payload即可。</p>
+<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/2.jpg" alt=""></p>
+<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/3.jpg" alt=""></p>
+<p>然后回溯函数可以看到<code>parserIfLabel</code>函数被<code>parserCommom</code>函数所引用，继续回溯可发现该函数出现在如图位置，其中可利用的位置非常多，前台的搜索、留言，后台的各项信息修改等位置都可以传参执行。</p>
+<p>以下以留言板举例：</p>
+<p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/4.jpg" alt=""><br>构造这样的留言表单提交，即可成功执行代码。<br><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/5.jpg" alt=""></p>
+<p>因其余位置任意代码执行利用同理，此处不再赘述。</p>
+<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p><img src="/2018/09/08/PbootCMS-v1-1-4-Remote-Code-Execute-Vulnerability/6.jpg" alt=""><br>系统的高版本对此漏洞进行了修复，增加了安全校验过滤。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/08/24/一次渗透纪实/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -689,7 +830,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -702,7 +843,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
