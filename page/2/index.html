@@ -232,6 +232,205 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/11/10/Pythonѧϰ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JrD">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JrD's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/10/Pythonѧϰ/" itemprop="url">Python学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T17:56:29+08:00">
+                2018-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/11/10/Pythonѧϰ/" class="leancloud_visitors" data-flag-title="Python学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h1><ol>
+<li>固定学习管道，mooc教程，练习python100例，Python核心编程第二版，廖雪峰python教程。</li>
+<li>熟练python特性，包括变量，条件，循环，数据类型，高阶函数（函数式编程），装饰器，函数式编程，面向对象编程。</li>
+<li>掌握二分、快排算法以及正则表达式。</li>
+<li><p>掌握python常用的标准库、第三方库及常用函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import sys,os,re,random,base64,md5,urllib,requests,socket,beautifulsoup,...</span><br><span class="line"></span><br><span class="line">map(),reduce(),filter(),lambda,pprint(),...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多写爬虫，POC，sqlmaptamper，Bruteforce之类的脚本来熟练运用。</p>
+</li>
+<li>看项目写项目 <code>#TODO</code></li>
+</ol>
+<h1 id="学习管道"><a href="#学习管道" class="headerlink" title="学习管道"></a>学习管道</h1><p><a href="https://www.imooc.com/learn/317" target="_blank" rel="noopener">https://www.imooc.com/learn/317</a> 慕课python进阶，可以动手的教程</p>
+<p><a href="http://www.runoob.com/python/python-100-examples.html" target="_blank" rel="noopener">http://www.runoob.com/python/python-100-examples.html</a> python100例</p>
+<p><a href="https://wizardforcel.gitbooks.io/core-python-2e/content/" target="_blank" rel="noopener">https://wizardforcel.gitbooks.io/core-python-2e/content/</a> Python 核心编程 第二版</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000</a> 廖雪峰python3教程（比较深 偏向开发）</p>
+<p><a href="http://www.runoob.com/python" target="_blank" rel="noopener">http://www.runoob.com/python</a> 菜鸟教程</p>
+<h1 id="查询管道"><a href="#查询管道" class="headerlink" title="查询管道"></a>查询管道</h1><p><code>help()</code>函数 #查看帮助</p>
+<p><a href="https://docs.python.org/3/" target="_blank" rel="noopener">https://docs.python.org/3/</a> #官方文档 </p>
+<p><a href="http://www.pythondoc.com/pythontutorial3/index.html" target="_blank" rel="noopener">http://www.pythondoc.com/pythontutorial3/index.html</a> #中文文档 </p>
+<p>其他的就是多google了</p>
+<h1 id="变量特点"><a href="#变量特点" class="headerlink" title="变量特点"></a>变量特点</h1><p>大小写敏感，强类型，不需要声明即可使用（赋值时加上小数点即可变为浮点型，）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10/4 = 2</span><br><span class="line"></span><br><span class="line">10.0/4 = 2.5</span><br></pre></td></tr></table></figure></p>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>list（列表）</p>
+<p>用<code>[]</code>来声明，特点是有序、动态（同一list中可以包含str，int，float，bool多种数据形式）<br><code>foo = [&#39;foo&#39;,100,Ture]</code></p>
+<p>tuple（元组）<br>用<code>()</code>来声明，与list的唯一区别是创建后不可修改。<br>注意：由于<code>()</code>也是规定的优先运算符号，所以创建单元素tuple时需要使用<code>(&quot;foo&quot;,)</code>多加一个<code>,</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#列表生成式一例</span><br><span class="line">print [a*100+b*10+a for a in range(1,10) for b in range(0,10) ]</span><br><span class="line">#生成121，222，232诸如此类3位对称数的列表</span><br></pre></td></tr></table></figure></p>
+<p><strong>dict</strong>ionaries（字典）<br>用<code>{}</code>来声明，如字典其名，是key与value一一映射的数据类型。<br>特点是</p>
+<ol>
+<li>按key查找查找速度快，但占用内存大，与list正好相反。</li>
+<li><p>无序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;</span><br><span class="line">    &apos;Adam&apos;: 95,</span><br><span class="line">    &apos;Lisa&apos;: 85,</span><br><span class="line">    &apos;Bart&apos;: 59</span><br><span class="line">&#125;</span><br><span class="line">print(d)</span><br><span class="line">#&#123;&apos;Lisa&apos;: 85, &apos;Adam&apos;: 95, &apos;Bart&apos;: 59&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>key必须是不可变的数据类型，即不能是list。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;</span><br><span class="line">    [&apos;a&apos;, &apos;b&apos;]: True</span><br><span class="line">&#125;</span><br><span class="line">print(d)</span><br><span class="line"></span><br><span class="line">#TypeError: unhashable type: &apos;list&apos;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>set(组、集合)<br>基本就是只有key没有value的dict，判断元素是否在set中，使用in操作符。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s = set([&apos;Adam&apos;, &apos;Lisa&apos;, &apos;Paul&apos;])</span><br><span class="line">L = [&apos;Adam&apos;, &apos;Lisa&apos;, &apos;Bart&apos;, &apos;Paul&apos;]</span><br><span class="line">for name in L:</span><br><span class="line">    if name in s:</span><br><span class="line">        s.remove(name)</span><br><span class="line">    else:</span><br><span class="line">        s.add(name)</span><br><span class="line">print s</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="条件判断和循环"><a href="#条件判断和循环" class="headerlink" title="条件判断和循环"></a>条件判断和循环</h1><p><strong>注意！判断语句后必须要有<code>:</code>，并且需要特别注意缩进！</strong></p>
+<p><code>if-elif-else</code>的多条件判断。</p>
+<p><code>for-in</code>的迭代遍历循环,可用于多重循环。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#记得提前声明的变量才可以+=</span><br><span class="line">L = range(1,101)</span><br><span class="line">sum = 0</span><br><span class="line">for i in L:</span><br><span class="line">    sum += i*i</span><br><span class="line">print sum</span><br></pre></td></tr></table></figure></p>
+<p><code>while-continue-break</code>条件判断循环，利用break判断结束循环，continue判断跳过这次循环进行下一次循环。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sum = 0</span><br><span class="line">x = 0</span><br><span class="line">while True:</span><br><span class="line">    x = x + 1</span><br><span class="line">    if x &gt; 100:</span><br><span class="line">        break</span><br><span class="line">    if x%2 == 0:</span><br><span class="line">        continue</span><br><span class="line">    sum += x</span><br><span class="line">print sum</span><br></pre></td></tr></table></figure></p>
+<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>对有序的数据类型（list,tuple）可以进行切片（slipe）操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 以下是pyhon2环境下的结果，因为py2中range()代表了一个List，py3中要使用list(range())才是一个List。</span><br><span class="line">L = range(1, 101)</span><br><span class="line"># 前10个数；</span><br><span class="line"># 3的倍数；</span><br><span class="line"># 不大于50的5的倍数。</span><br><span class="line"># 最后10个数；</span><br><span class="line"># 最后10个5的倍数。</span><br><span class="line">print L[:10] #等同于L[0:10]</span><br><span class="line">print L[2::3] </span><br><span class="line">print L[4:50:5] </span><br><span class="line">print L[-10:]</span><br><span class="line">print L[-46::5]</span><br></pre></td></tr></table></figure></p>
+<p>对字符串的切片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 利用切片操作完成仅首字母变成大写的自定义函数</span><br><span class="line">def firstCharUpper(s):</span><br><span class="line">    return s[:1].upper()+s[1:]</span><br><span class="line"></span><br><span class="line">print firstCharUpper(&apos;hello&apos;)</span><br><span class="line">print firstCharUpper(&apos;sunday&apos;)</span><br><span class="line">print firstCharUpper(&apos;september&apos;)</span><br><span class="line">#Hello</span><br><span class="line">#Sunday</span><br><span class="line">#September</span><br></pre></td></tr></table></figure></p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数特性"><a href="#函数特性" class="headerlink" title="函数特性"></a>函数特性</h2><ol>
+<li><p>python中自定义函数对全局变量的引用比较特殊。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sum = 0</span><br><span class="line">def square_of_sum(L):</span><br><span class="line">    for i in L:</span><br><span class="line">        sum += i*i</span><br><span class="line">    return sum</span><br><span class="line">print square_of_sum([1, 2, 3, 4, 5])</span><br><span class="line"># UnboundLocalError: local variable &apos;sum&apos; referenced before assignment （报错：本地变量sum在赋值之前被引用了</span><br><span class="line"># 说明在def定义函数之前所进行赋值的sum其实没有被引用在def中</span><br><span class="line"># 不推荐使用全局变量，如若真的要使用全局变量可参考下例示范</span><br><span class="line">sum = 0</span><br><span class="line">def square_of_sum(L):</span><br><span class="line">    for i in L:</span><br><span class="line">        global sum</span><br><span class="line">        sum += i*i</span><br><span class="line">    return sum</span><br><span class="line">print square_of_sum([1, 2, 3, 4, 5])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在python函数的结果中返回多个值的时候其实就是返回了一个<code>tuple</code>元组。</p>
+</li>
+<li><p>递归函数：在函数内部，可以调用其他函数。如果一个函数在内部调用自身本身，这个函数就是递归函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">以经典的汉诺塔问题为例</span><br><span class="line"># move(n, a, b, c)表示的是有n个盘子在a柱子上，将要移到b柱子上面去</span><br><span class="line">def move(n, a, b, c):</span><br><span class="line"># 如果a柱子上面只有一个盘子，则直接移到c柱子上面去并输出路径，结束递归</span><br><span class="line">    if n == 1:  </span><br><span class="line">        print a, &apos;--&gt;&apos;, c</span><br><span class="line">        return</span><br><span class="line"># 表示的是将n-1的盘子从a柱子上面移到b柱子上面去</span><br><span class="line">    move(n-1, a, c, b)</span><br><span class="line"># 输出最下面个盘子移从a移到c的路径</span><br><span class="line">    print a, &apos;--&gt;&apos;, c</span><br><span class="line"># 将b柱子上面的n-1个盘子移动到c柱子上面</span><br><span class="line">    move(n-1, b, a, c)</span><br><span class="line"></span><br><span class="line">move(4, &apos;A&apos;, &apos;B&apos;, &apos;C&apos;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认参数只能定义在必需参数的后面：</p>
+<figure class="highlight plain"><figcaption><span>OK:</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fn1(a, b=1, c=2):</span><br><span class="line">    pass</span><br><span class="line"># Error:</span><br><span class="line">def fn2(a=1, b):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><h3 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h3><p>高阶函数：map()将列表中的变量遍历并且一一传入第一个参数的函数中进行处理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">求每个数的平方</span><br><span class="line">def f(x):</span><br><span class="line">    return x*x</span><br><span class="line">print map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])</span><br><span class="line">#[1, 4, 9, 16, 25, 36, 49, 64, 81]</span><br><span class="line">#注意：map()函数不改变原有的 list，而是返回一个新的 list。</span><br></pre></td></tr></table></figure></p>
+<h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><p>高阶函数：相当于传两个参数的map()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#求乘积</span><br><span class="line">def prod(x, y):</span><br><span class="line">    return x*y</span><br><span class="line">print reduce(prod, [2, 4, 5, 7, 12])</span><br><span class="line">#3360</span><br></pre></td></tr></table></figure></p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h3><p>高阶函数：filter()，经常用于过滤作用，函数返回的bool为true则保留，为false则丢弃<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#只取1到100中能二次开根结果为整数的值</span><br><span class="line">import math</span><br><span class="line"></span><br><span class="line">def is_sqr(x):</span><br><span class="line">    return math.sqrt(x)%1==0</span><br><span class="line"></span><br><span class="line">print filter(is_sqr, range(1, 101))</span><br><span class="line">#[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]</span><br></pre></td></tr></table></figure></p>
+<h3 id="匿名函数-lambda"><a href="#匿名函数-lambda" class="headerlink" title="匿名函数 lambda"></a>匿名函数 lambda</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#简化代码，可以不用专门去定义一些简单的自定义函数</span><br><span class="line">def is_not_empty(s):</span><br><span class="line">    return s and len(s.strip()) &gt; 0</span><br><span class="line"></span><br><span class="line">print filter(is_not_empty, [&apos;test&apos;, None, &apos;&apos;, &apos;str&apos;, &apos;  &apos;, &apos;END&apos;])</span><br><span class="line">#以下代码作用相同</span><br><span class="line">print filter(lambda s:s and len(s.strip())&gt;0, [&apos;test&apos;, None, &apos;&apos;, &apos;str&apos;, &apos;  &apos;, &apos;END&apos;])</span><br></pre></td></tr></table></figure>
+<h3 id="返回函数"><a href="#返回函数" class="headerlink" title="返回函数"></a>返回函数</h3><p>Python的函数不但可以返回int、str、list、dict等数据类型，还可以返回函数！<br>由于可以返回函数，我们在后续代码里就可以决定到底要不要调用该函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def calc_prod(lst):</span><br><span class="line">    def lazy_prod():</span><br><span class="line">        def f(x, y):</span><br><span class="line">            return x * y</span><br><span class="line">        return reduce(f, lst)</span><br><span class="line">    return lazy_prod</span><br><span class="line">f = calc_prod([1, 2, 3, 4])</span><br><span class="line">print f() #适当的延迟调用 可以优化程序运行</span><br></pre></td></tr></table></figure></p>
+<p>###闭包</p>
+<p><a href="https://www.imooc.com/code/6059" target="_blank" rel="noopener">https://www.imooc.com/code/6059</a> 大致就是返回函数不要引用任何循环变量，或者后续会发生变化的变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def count():</span><br><span class="line">    fs = []</span><br><span class="line">    for i in range(1, 4):</span><br><span class="line">        def f(j=i):</span><br><span class="line">            return j*j</span><br><span class="line">        fs.append(f)</span><br><span class="line">    return fs</span><br><span class="line"></span><br><span class="line">f1, f2, f3 = count()</span><br><span class="line">print f1(), f2(), f3()</span><br></pre></td></tr></table></figure></p>
+<h3 id="cmp"><a href="#cmp" class="headerlink" title="cmp()"></a>cmp()</h3><p>比较函数，如果x,y是字符串则比较ASCII码的大小<br>cmp(…)<br>    cmp(x, y) -&gt; integer</p>
+<pre><code>Return -1 if x&lt;y, 0 if x==y, 1 if x&gt;y.
+</code></pre><h3 id="sorted"><a href="#sorted" class="headerlink" title="sorted()"></a>sorted()</h3><p>依从小到大（如果其中有字符串则比较ASCII码）来对list进行排序的函数，也可以作为高阶函数使用，如下例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 对字符串排序时，有时候忽略大小写排序更符合习惯。请利用sorted()高阶函数，实现忽略大小写排序的算法。</span><br><span class="line"></span><br><span class="line"># 输入：[&apos;bob&apos;, &apos;about&apos;, &apos;Zoo&apos;, &apos;Credit&apos;]</span><br><span class="line"># 输出：[&apos;about&apos;, &apos;bob&apos;, &apos;Credit&apos;, &apos;Zoo&apos;]</span><br><span class="line">def cmp_ignore_case(s1, s2):</span><br><span class="line">    return cmp(s1.lower(), s2.lower()) #返回1则将s1往后排</span><br><span class="line"></span><br><span class="line">print sorted([&apos;bob&apos;, &apos;about&apos;, &apos;Zoo&apos;, &apos;Credit&apos;], cmp_ignore_case)</span><br></pre></td></tr></table></figure></p>
+<h3 id="enumerate"><a href="#enumerate" class="headerlink" title="enumerate()"></a>enumerate()</h3><p>enumerate() 函数可以为list建立索引：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#[&apos;Adam&apos;, &apos;Lisa&apos;, &apos;Bart&apos;, &apos;Paul&apos;]</span><br><span class="line">#经过enumerate()变成了类似：</span><br><span class="line">#[(0, &apos;Adam&apos;), (1, &apos;Lisa&apos;), (2, &apos;Bart&apos;), (3, &apos;Paul&apos;)]</span><br><span class="line"></span><br><span class="line">L = [&apos;Adam&apos;, &apos;Lisa&apos;, &apos;Bart&apos;, &apos;Paul&apos;]</span><br><span class="line">for index, name in enumerate(L):</span><br><span class="line">     print index, &apos;-&apos;, name</span><br><span class="line">... </span><br><span class="line">0 - Adam</span><br><span class="line">1 - Lisa</span><br><span class="line">2 - Bart</span><br><span class="line">3 - Paul</span><br></pre></td></tr></table></figure></p>
+<h3 id="values-方法"><a href="#values-方法" class="headerlink" title="values()方法"></a>values()方法</h3><p>dict 对象有一个 values() 方法，这个方法把dict转换成一个包含所有value的list，这样，我们迭代的就是 dict的每一个 value：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d = &#123; &apos;Adam&apos;: 95, &apos;Lisa&apos;: 85, &apos;Bart&apos;: 59 &#125;</span><br><span class="line">print d.values()</span><br><span class="line"># [85, 95, 59]</span><br><span class="line">for v in d.values():</span><br><span class="line">    print v</span><br><span class="line"># 85</span><br><span class="line"># 95</span><br><span class="line"># 59</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jrdw0.github.io/2018/09/28/渗透测试备忘之信息收集/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1044,7 +1243,7 @@ site:xxx.com 管理/后台/admin/login
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
