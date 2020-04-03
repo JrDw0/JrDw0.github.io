@@ -82,22 +82,22 @@
 <meta name="description" content="最近写了个Github监控集成到安全管理平台上，大概写成了下面这样。开发期间参考学习了各位师傅在Github开源的各个Github监控项目，比如GSIL，Hawkeye，Github-Monitor，学习了不少。但发现大部分都是使用python的PyGithub库写的。为了给OneForAll写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAP">
 <meta name="keywords" content="Github">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于监控Github泄露使用API的一些心得">
+<meta property="og:title" content="使用API监控Github泄露的一些心得">
 <meta property="og:url" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/index.html">
 <meta property="og:site_name" content="JrD&#39;s blog">
 <meta property="og:description" content="最近写了个Github监控集成到安全管理平台上，大概写成了下面这样。开发期间参考学习了各位师傅在Github开源的各个Github监控项目，比如GSIL，Hawkeye，Github-Monitor，学习了不少。但发现大部分都是使用python的PyGithub库写的。为了给OneForAll写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAP">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403093322300.png">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102604269.png">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102708368.png">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102737812.png">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403103601285.png">
-<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403104441736.png">
-<meta property="og:updated_time" content="2020-04-03T05:33:04.049Z">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403093322300.png">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102604269.png">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102708368.png">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102737812.png">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403103601285.png">
+<meta property="og:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403104441736.png">
+<meta property="og:updated_time" content="2020-04-03T05:40:12.215Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于监控Github泄露使用API的一些心得">
+<meta name="twitter:title" content="使用API监控Github泄露的一些心得">
 <meta name="twitter:description" content="最近写了个Github监控集成到安全管理平台上，大概写成了下面这样。开发期间参考学习了各位师傅在Github开源的各个Github监控项目，比如GSIL，Hawkeye，Github-Monitor，学习了不少。但发现大部分都是使用python的PyGithub库写的。为了给OneForAll写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAP">
-<meta name="twitter:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403093322300.png">
+<meta name="twitter:image" content="https://jrdw0.github.io/2020/04/03/使用API监控Github泄露的一些心得/image-20200403093322300.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>关于监控Github泄露使用API的一些心得 | JrD's blog</title>
+  <title>使用API监控Github泄露的一些心得 | JrD's blog</title>
   
 
 
@@ -257,7 +257,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">关于监控Github泄露使用API的一些心得</h1>
+          <h1 class="post-title" itemprop="name headline">使用API监控Github泄露的一些心得</h1>
         
 
         <div class="post-meta">
@@ -287,7 +287,7 @@
 
           
           
-             <span id="/2020/04/03/使用API监控Github泄露的一些心得/" class="leancloud_visitors" data-flag-title="关于监控Github泄露使用API的一些心得">
+             <span id="/2020/04/03/使用API监控Github泄露的一些心得/" class="leancloud_visitors" data-flag-title="使用API监控Github泄露的一些心得">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -318,15 +318,15 @@
       
 
       
-        <p>最近写了个Github监控集成到安全管理平台上，大概写成了下面这样。<img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403093322300.png" alt="image-20200403093322300" style="zoom:50%;">开发期间参考学习了各位师傅在Github开源的各个Github监控项目，比如<a href="https://github.com/FeeiCN/GSIL" target="_blank" rel="noopener">GSIL</a>，<a href="https://github.com/0xbug/Hawkeye" target="_blank" rel="noopener">Hawkeye</a>，<a href="https://github.com/VKSRC/Github-Monitor" target="_blank" rel="noopener">Github-Monitor</a>，学习了不少。但发现大部分都是使用python的<a href="https://github.com/PyGithub/PyGithub" target="_blank" rel="noopener"><em>PyGithub</em></a>库写的。为了给<a href="https://github.com/shmilylty/OneForAll" target="_blank" rel="noopener"><em>OneForAll</em></a>写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAPI，以下总结一下遇到的坑和发现的盲点。</p>
+        <p>最近写了个Github监控集成到安全管理平台上，大概写成了下面这样。<img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403093322300.png" alt="image-20200403093322300" style="zoom:50%;">开发期间参考学习了各位师傅在Github开源的各个Github监控项目，比如<a href="https://github.com/FeeiCN/GSIL" target="_blank" rel="noopener">GSIL</a>，<a href="https://github.com/0xbug/Hawkeye" target="_blank" rel="noopener">Hawkeye</a>，<a href="https://github.com/VKSRC/Github-Monitor" target="_blank" rel="noopener">Github-Monitor</a>，学习了不少。但发现大部分都是使用python的<a href="https://github.com/PyGithub/PyGithub" target="_blank" rel="noopener"><em>PyGithub</em></a>库写的。为了给<a href="https://github.com/shmilylty/OneForAll" target="_blank" rel="noopener"><em>OneForAll</em></a>写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAPI，以下总结一下遇到的坑和发现的盲点。</p>
 <h3 id="关于Github搜索的符号问题"><a href="#关于Github搜索的符号问题" class="headerlink" title="关于Github搜索的符号问题"></a>关于Github搜索的符号问题</h3><p>我们在搜索监控Github泄露时，经常会遇到搜索带符号的关键词的需求，比如想搜索<code>freebuf.co</code>，或者<a href="mailto:`@freebuff.com" target="_blank" rel="noopener">`@freebuff.com</a>`。但是实际上GitHub官方文档的<a href="https://help.github.com/cn/github/searching-for-information-on-github/searching-code#considerations-for-code-search" target="_blank" rel="noopener">代码搜索的注意事项</a>里是有说明的：</p>
 <blockquote>
 <p>您无法使用以下通配符作为搜索查询的一部分：<code>. , : ; / \</code> ‘ “ = * ! ? # $ &amp; + ^ | ~ &lt; &gt; ( ) { } [ ]`. 搜索只会忽略这些符号。</p>
 </blockquote>
 <p>举例的搜索结果如下图：</p>
-<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102604269.png" alt="image-20200403102604269"><img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102708368.png" alt="image-20200403102708368"></p>
-<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403102737812.png" alt="image-20200403102737812"></p>
-<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403103601285.png" alt="image-20200403103601285">可以发现<a href="mailto:`@freebuf.com" target="_blank" rel="noopener">`@freebuf.com</a><code>、</code>freebuf.com<code>、</code>free buf<code>的搜索结果数量是一致的，其实就是省略符号后搜索了freebuf和com两个关键词同时出现的结果。但是可以发现</code>“freebuf com”<code>的搜索结果是不一样的，并且结果少很多，我爬取了结果后自己总结发现</code>“freebuf com”<code>的结果是</code>freebuf<code>和</code>com<code>在同一行且顺序排序的情况。而</code>freebuf com`的搜索结果中会出现<img src="/2020/04/03/使用API监控Github泄露的一些心得/关于监控Github泄露使用API的一些心得/image-20200403104441736.png" alt="image-20200403104441736"></p>
+<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102604269.png" alt="image-20200403102604269"><img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102708368.png" alt="image-20200403102708368"></p>
+<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403102737812.png" alt="image-20200403102737812"></p>
+<p><img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403103601285.png" alt="image-20200403103601285">可以发现<a href="mailto:`@freebuf.com" target="_blank" rel="noopener">`@freebuf.com</a><code>、</code>freebuf.com<code>、</code>free buf<code>的搜索结果数量是一致的，其实就是省略符号后搜索了freebuf和com两个关键词同时出现的结果。但是可以发现</code>“freebuf com”<code>的搜索结果是不一样的，并且结果少很多，我爬取了结果后自己总结发现</code>“freebuf com”<code>的结果是</code>freebuf<code>和</code>com<code>在同一行且顺序排序的情况。而</code>freebuf com`的搜索结果中会出现<img src="/2020/04/03/使用API监控Github泄露的一些心得/image-20200403104441736.png" alt="image-20200403104441736"></p>
 <p>这样更加宽松的匹配结果。</p>
 <h3 id="GithubAPI的使用"><a href="#GithubAPI的使用" class="headerlink" title="GithubAPI的使用"></a>GithubAPI的使用</h3><p>为了给<a href="https://github.com/shmilylty/OneForAll" target="_blank" rel="noopener"><em>OneForAll</em></a>写个从GithubAPI抓子域名的module，避免引入太多第三方依赖所以后面又研究了原生GithubAPI，其实大部分坑官方文档都有讲我这里就浓缩一下为各位节省一下翻查API文档的人生。</p>
 <ol>
